@@ -31,6 +31,7 @@
 		996BD15C2CB53808007F6C57 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD15B2CB53808007F6C57 /* UIViewController+Extension.swift */; };
 		996BD1602CB539EB007F6C57 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD15F2CB539EB007F6C57 /* BaseView.swift */; };
 		996BD1622CB53A96007F6C57 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD1612CB53A96007F6C57 /* Resource.swift */; };
+		996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD16A2CB659DA007F6C57 /* ActionButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,6 +66,7 @@
 		996BD15B2CB53808007F6C57 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		996BD15F2CB539EB007F6C57 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		996BD1612CB53A96007F6C57 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		996BD16A2CB659DA007F6C57 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 		996BD1272CB5293F007F6C57 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				996BD16A2CB659DA007F6C57 /* ActionButton.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				996BD1312CB52BB3007F6C57 /* UIColor+Extension.swift in Sources */,
+				996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */,
 				996BD1622CB53A96007F6C57 /* Resource.swift in Sources */,
 				996BD15C2CB53808007F6C57 /* UIViewController+Extension.swift in Sources */,
 				996BD1072CB52780007F6C57 /* AppDelegate.swift in Sources */,

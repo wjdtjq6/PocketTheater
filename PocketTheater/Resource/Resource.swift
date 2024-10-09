@@ -35,7 +35,7 @@ enum Resource {
     }
 
     enum Image {
-        static let play = UIImage(systemName:  "play")
+        static let play = UIImage(systemName:  "play.fill")
         static let search = UIImage(systemName:  "magnifyingglass")
         static let tv = UIImage(systemName:  "sparkles.tv")
         static let house = UIImage(systemName:  "house")
