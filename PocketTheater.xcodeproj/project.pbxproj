@@ -31,12 +31,14 @@
 		996BD15C2CB53808007F6C57 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD15B2CB53808007F6C57 /* UIViewController+Extension.swift */; };
 		996BD1602CB539EB007F6C57 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD15F2CB539EB007F6C57 /* BaseView.swift */; };
 		996BD1622CB53A96007F6C57 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD1612CB53A96007F6C57 /* Resource.swift */; };
+		996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD16A2CB659DA007F6C57 /* ActionButton.swift */; };
 		C4DAFA5F2CB659BF0063B4B3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA5E2CB659BF0063B4B3 /* HomeView.swift */; };
 		C4DAFA612CB659C60063B4B3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA602CB659C60063B4B3 /* HomeViewController.swift */; };
 		C4DAFA632CB659E50063B4B3 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA622CB659E50063B4B3 /* SearchView.swift */; };
 		C4DAFA652CB659F40063B4B3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA642CB659F40063B4B3 /* SearchViewController.swift */; };
 		C4DAFA672CB65A050063B4B3 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA662CB65A050063B4B3 /* LikeView.swift */; };
 		C4DAFA692CB65A0F0063B4B3 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA682CB65A0F0063B4B3 /* LikeViewController.swift */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -71,12 +73,14 @@
 		996BD15B2CB53808007F6C57 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		996BD15F2CB539EB007F6C57 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		996BD1612CB53A96007F6C57 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		996BD16A2CB659DA007F6C57 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		C4DAFA5E2CB659BF0063B4B3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C4DAFA602CB659C60063B4B3 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C4DAFA622CB659E50063B4B3 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		C4DAFA642CB659F40063B4B3 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C4DAFA662CB65A050063B4B3 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		C4DAFA682CB65A0F0063B4B3 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
+
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +199,7 @@
 		996BD1272CB5293F007F6C57 /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
+				996BD16A2CB659DA007F6C57 /* ActionButton.swift */,
 			);
 			path = CustomView;
 			sourceTree = "<group>";
@@ -370,6 +375,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				996BD1312CB52BB3007F6C57 /* UIColor+Extension.swift in Sources */,
+				996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */,
 				996BD1622CB53A96007F6C57 /* Resource.swift in Sources */,
 				C4DAFA5F2CB659BF0063B4B3 /* HomeView.swift in Sources */,
 				996BD15C2CB53808007F6C57 /* UIViewController+Extension.swift in Sources */,
