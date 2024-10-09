@@ -1,5 +1,5 @@
 //
-//  HomeTabBar.swift
+//  HomeTabBarController.swift
 //  PocketTheater
 //
 //  Created by 김윤우 on 10/8/24.
@@ -11,16 +11,15 @@ final class HomeTabBarController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setTabBarUI()
+        setTabBarUI()
     }
     
     func setDefaultTabBar() {
-//        let home = createTabBarItem(title: "홈", image: Resource.Image.home, viewController: HomeViewController())
-//        let search = createTabBarItem(title: "해시태그", image: Resource.Image.hashtag, viewController: HashTagViewController())
-//        let community = createTabBarItem(title: "커뮤니티", image: Resource.Image.board, viewController: CommunityViewController())
-//        let mypage = createTabBarItem(title: "마이페이지", image: Resource.Image.person, viewController: MyPageViewController())
-//        
-//        let viewControllers = [home, search, community, mypage]
+        let home = createTabBarItem(title: "Home", image: Resource.Image.house, viewController: HomeViewController())
+        let search = createTabBarItem(title: "Top Search", image: Resource.Image.search, viewController: SearchViewController())
+        let like = createTabBarItem(title: "Like", image: Resource.Image.smileFace, viewController: LikeViewController())
+        
+        let viewControllers = [home, search, like]
         self.setViewControllers(viewControllers, animated: true)
     }
     
@@ -36,11 +35,11 @@ final class HomeTabBarController: UITabBarController {
         return navigationController
     }
     
-//    private func setTabBarUI() {
-//        tabBar.backgroundColor = Resource.Color.paleGray
-//        tabBar.layer.borderWidth = 1
-//        tabBar.layer.borderColor = Resource.Color.lightGray.cgColor
-//        tabBar.tintColor = Resource.Color.purple
-//    }
-//    
+    private func setTabBarUI() {
+        tabBar.backgroundColor = Resource.Color.darkGray
+        // tabBar.layer.borderWidth = 1
+        // tabBar.layer.borderColor = Resource.Color.lightGray.cgColor
+        tabBar.barTintColor = .red
+        tabBar.tintColor = Resource.Color.white
+    }
 }
