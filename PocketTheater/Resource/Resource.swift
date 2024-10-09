@@ -35,10 +35,10 @@ enum Resource {
     }
 
     enum Image {
-        static let play = UIImage(systemName:  "play")
+        static let play = UIImage(systemName:  "play.fill")
         static let search = UIImage(systemName:  "magnifyingglass")
         static let tv = UIImage(systemName:  "sparkles.tv")
-        static let house = UIImage(systemName:  "house")
+        static let house = UIImage(systemName:  "house.fill")
         static let playCircle = UIImage(systemName:  "play.circle")
         static let download = UIImage(systemName:  "square.and.arrow.down")
         static let smileFace = UIImage(systemName:  "face.smiling")
@@ -48,7 +48,8 @@ enum Resource {
     enum Color {
         static let white = UIColor(hex: "FFFFFF") // 흰색
         static let black = UIColor(hex: "000000") // 검은색
-        static let darkGray = UIColor(hex: "1B1B1E") // 다크 그레이
+        static let eerieBlack = UIColor(hex: "1B1B1E") // 이리 블랙
+        static let darkGray = UIColor(hex: "373737") // 다크 그레이
         static let lightGray = UIColor(hex: "FC2125") // 레드
     }
 
