@@ -38,7 +38,7 @@
 		C4DAFA652CB659F40063B4B3 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA642CB659F40063B4B3 /* SearchViewController.swift */; };
 		C4DAFA672CB65A050063B4B3 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA662CB65A050063B4B3 /* LikeView.swift */; };
 		C4DAFA692CB65A0F0063B4B3 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA682CB65A0F0063B4B3 /* LikeViewController.swift */; };
-
+		C4DAFA6C2CB698C10063B4B3 /* LikeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA6B2CB698C10063B4B3 /* LikeTable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -80,7 +80,7 @@
 		C4DAFA642CB659F40063B4B3 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		C4DAFA662CB65A050063B4B3 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		C4DAFA682CB65A0F0063B4B3 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
-
+		C4DAFA6B2CB698C10063B4B3 /* LikeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeTable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +128,7 @@
 				996BD1282CB5294A007F6C57 /* Extension */,
 				996BD1232CB52902007F6C57 /* Model */,
 				996BD1222CB528FC007F6C57 /* Network */,
+				C4DAFA6A2CB698830063B4B3 /* Database */,
 				996BD1242CB5290A007F6C57 /* Resource */,
 				996BD1252CB52922007F6C57 /* Component */,
 				996BD1292CB52A6E007F6C57 /* Presentation */,
@@ -284,6 +285,14 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		C4DAFA6A2CB698830063B4B3 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				C4DAFA6B2CB698C10063B4B3 /* LikeTable.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -377,6 +386,7 @@
 				996BD1312CB52BB3007F6C57 /* UIColor+Extension.swift in Sources */,
 				996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */,
 				996BD1622CB53A96007F6C57 /* Resource.swift in Sources */,
+				C4DAFA6C2CB698C10063B4B3 /* LikeTable.swift in Sources */,
 				C4DAFA5F2CB659BF0063B4B3 /* HomeView.swift in Sources */,
 				996BD15C2CB53808007F6C57 /* UIViewController+Extension.swift in Sources */,
 				996BD1072CB52780007F6C57 /* AppDelegate.swift in Sources */,
