@@ -30,13 +30,15 @@
 		996BD1602CB539EB007F6C57 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD15F2CB539EB007F6C57 /* BaseView.swift */; };
 		996BD1622CB53A96007F6C57 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD1612CB53A96007F6C57 /* Resource.swift */; };
 		996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996BD16A2CB659DA007F6C57 /* ActionButton.swift */; };
+		99AF48632CB6B30E006F0B38 /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 99AF48622CB6B30E006F0B38 /* Differentiator */; };
+		99AF48652CB6B30E006F0B38 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 99AF48642CB6B30E006F0B38 /* RxDataSources */; };
+		99AF487A2CB7C3E5006F0B38 /* MediaCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AF48792CB7C3E5006F0B38 /* MediaCollectionViewCell.swift */; };
+		99AF487C2CB7CB8C006F0B38 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AF487B2CB7CB8C006F0B38 /* SearchViewModel.swift */; };
+		99AF487F2CB80E33006F0B38 /* SearchViewRecommandMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99AF487E2CB80E33006F0B38 /* SearchViewRecommandMediaCell.swift */; };
 		BF35BF042CB6592C002970EF /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF35BF032CB6592C002970EF /* NetworkManager.swift */; };
 		BF35BF082CB675FD002970EF /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF35BF072CB675FD002970EF /* Media.swift */; };
 		BF35BF0A2CB69364002970EF /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF35BF092CB69364002970EF /* Genre.swift */; };
 		BF35BF0C2CB69569002970EF /* Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF35BF0B2CB69569002970EF /* Cast.swift */; };
-		99AF48632CB6B30E006F0B38 /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 99AF48622CB6B30E006F0B38 /* Differentiator */; };
-		99AF48652CB6B30E006F0B38 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 99AF48642CB6B30E006F0B38 /* RxDataSources */; };
-
 		C4DAFA5F2CB659BF0063B4B3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA5E2CB659BF0063B4B3 /* HomeView.swift */; };
 		C4DAFA612CB659C60063B4B3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA602CB659C60063B4B3 /* HomeViewController.swift */; };
 		C4DAFA632CB659E50063B4B3 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA622CB659E50063B4B3 /* SearchView.swift */; };
@@ -79,6 +81,9 @@
 		996BD15F2CB539EB007F6C57 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		996BD1612CB53A96007F6C57 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		996BD16A2CB659DA007F6C57 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		99AF48792CB7C3E5006F0B38 /* MediaCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCollectionViewCell.swift; sourceTree = "<group>"; };
+		99AF487B2CB7CB8C006F0B38 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		99AF487E2CB80E33006F0B38 /* SearchViewRecommandMediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewRecommandMediaCell.swift; sourceTree = "<group>"; };
 		BF35BF032CB6592C002970EF /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		BF35BF072CB675FD002970EF /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		BF35BF092CB69364002970EF /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
@@ -195,6 +200,7 @@
 		996BD1252CB52922007F6C57 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				99AF487D2CB80641006F0B38 /* CollectionViewCell */,
 				996BD1272CB5293F007F6C57 /* CustomView */,
 				996BD1262CB5293A007F6C57 /* Base */,
 			);
@@ -253,6 +259,8 @@
 			children = (
 				C4DAFA622CB659E50063B4B3 /* SearchView.swift */,
 				C4DAFA642CB659F40063B4B3 /* SearchViewController.swift */,
+				99AF487B2CB7CB8C006F0B38 /* SearchViewModel.swift */,
+				99AF487E2CB80E33006F0B38 /* SearchViewRecommandMediaCell.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -287,6 +295,14 @@
 				996BD1552CB5322F007F6C57 /* ViewModelType.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		99AF487D2CB80641006F0B38 /* CollectionViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				99AF48792CB7C3E5006F0B38 /* MediaCollectionViewCell.swift */,
+			);
+			path = CollectionViewCell;
 			sourceTree = "<group>";
 		};
 		C4DAFA5C2CB659A80063B4B3 /* Home */ = {
@@ -397,6 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				996BD1312CB52BB3007F6C57 /* UIColor+Extension.swift in Sources */,
+				99AF487A2CB7C3E5006F0B38 /* MediaCollectionViewCell.swift in Sources */,
 				996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */,
 				996BD1622CB53A96007F6C57 /* Resource.swift in Sources */,
 				C4DAFA6C2CB698C10063B4B3 /* LikeTable.swift in Sources */,
@@ -405,6 +422,7 @@
 				BF35BF042CB6592C002970EF /* NetworkManager.swift in Sources */,
 				996BD1072CB52780007F6C57 /* AppDelegate.swift in Sources */,
 				C4DAFA612CB659C60063B4B3 /* HomeViewController.swift in Sources */,
+				99AF487F2CB80E33006F0B38 /* SearchViewRecommandMediaCell.swift in Sources */,
 				996BD1212CB528D4007F6C57 /* APIKey.swift in Sources */,
 				996BD1582CB53260007F6C57 /* NSObjectProtocol+Extension.swift in Sources */,
 				996BD15A2CB53354007F6C57 /* BaseViewController.swift in Sources */,
@@ -413,6 +431,7 @@
 				C4DAFA652CB659F40063B4B3 /* SearchViewController.swift in Sources */,
 				C4DAFA692CB65A0F0063B4B3 /* LikeViewController.swift in Sources */,
 				C4DAFA632CB659E50063B4B3 /* SearchView.swift in Sources */,
+				99AF487C2CB7CB8C006F0B38 /* SearchViewModel.swift in Sources */,
 				996BD12B2CB52A9D007F6C57 /* Constant.swift in Sources */,
 				C4DAFA672CB65A050063B4B3 /* LikeView.swift in Sources */,
 				996BD1602CB539EB007F6C57 /* BaseView.swift in Sources */,
