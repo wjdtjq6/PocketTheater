@@ -31,8 +31,8 @@ final class NetworkManager {
         return request
     }
     
-    // 데이터 요청 함수
-    private func fetchRequest<T: Decodable>(url: URL) async throws -> T {
+    // Decodable 데이터 요청 함수
+    private func fetchDecodableRequest<T: Decodable>(url: URL) async throws -> T {
         let (data, response) = try await URLSession.shared.data(for: makeRequest(for: url))
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
@@ -47,53 +47,57 @@ final class NetworkManager {
         }
     }
     
-    // API URL 생성 함수
-    private func makeURL(path: String, queryItems: [URLQueryItem]) throws -> URL {
-        var components = URLComponents(string: APIKey.baseURL + path)
-        var allQueryItems = queryItems
-        allQueryItems.append(URLQueryItem(name: "language", value: "ko-KR"))
-        components?.queryItems = allQueryItems
-        guard let url = components?.url else { throw NetworkError.invalidURL }
-        return url
-    }
-    
-    func fetchTrending(mediaType: MediaType) async throws -> Media {
-        let url = try makeURL(path: "trending/\(mediaType.rawValue)/week", queryItems: [])
-        return try await fetchRequest(url: url)
-    }
-    
-    func fetchSearch(mediaType: MediaType, query: String) async throws -> Media {
-        let url = try makeURL(path: "search/\(mediaType.rawValue)", queryItems: [URLQueryItem(name: "query", value: query)])
-        return try await fetchRequest(url: url)
-    }
-    
-    func fetchSimilar(mediaType: MediaType, id: Int) async throws -> Media {
-        let url = try makeURL(path: "\(mediaType.rawValue)/\(id)/recommendations", queryItems: [])
-        return try await fetchRequest(url: url)
-    }
-    
-    func fetchCast(mediaType: MediaType, id: Int) async throws -> Cast {
-        let url = try makeURL(path: "\(mediaType.rawValue)/\(id)/credits", queryItems: [])
-        return try await fetchRequest(url: url)
-    }
-    
-    func fetchGenre(mediaType: MediaType) async throws -> Genre {
-        let url = try makeURL(path: "genre/\(mediaType.rawValue)/list", queryItems: [])
-        return try await fetchRequest(url: url)
-    }
-    
-    func fetchImage(imagePath: String) async throws -> Data {
-        let url = URL(string: APIKey.imageURL + imagePath)
-        guard let url = url else {
-            throw NetworkError.invalidURL
-        }
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
+    // Data 요청 함수
+    private func fetchDataRequest(url: URL) async throws -> Data {
+        let (data, response) = try await URLSession.shared.data(for: makeRequest(for: url))
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw NetworkError.invalidResponse
         }
         
         return data
+    }
+    
+    // API URL 생성 함수
+    private func makeURL(path: String, queryItems: [URLQueryItem], isImageURL: Bool = false) throws -> URL {
+        let baseURL = isImageURL ? APIKey.imageURL : APIKey.baseURL
+        var components = URLComponents(string: baseURL + path)
+        if !isImageURL {
+            var allQueryItems = queryItems
+            allQueryItems.append(URLQueryItem(name: "language", value: "ko-KR"))
+            components?.queryItems = allQueryItems
+        }
+        guard let url = components?.url else { throw NetworkError.invalidURL }
+        return url
+    }
+    
+    func fetchTrending(mediaType: MediaType) async throws -> Media {
+        let url = try makeURL(path: "trending/\(mediaType.rawValue)/week", queryItems: [])
+        return try await fetchDecodableRequest(url: url)
+    }
+    
+    func fetchSearch(mediaType: MediaType, query: String) async throws -> Media {
+        let url = try makeURL(path: "search/\(mediaType.rawValue)", queryItems: [URLQueryItem(name: "query", value: query)])
+        return try await fetchDecodableRequest(url: url)
+    }
+    
+    func fetchSimilar(mediaType: MediaType, id: Int) async throws -> Media {
+        let url = try makeURL(path: "\(mediaType.rawValue)/\(id)/recommendations", queryItems: [])
+        return try await fetchDecodableRequest(url: url)
+    }
+    
+    func fetchCast(mediaType: MediaType, id: Int) async throws -> Cast {
+        let url = try makeURL(path: "\(mediaType.rawValue)/\(id)/credits", queryItems: [])
+        return try await fetchDecodableRequest(url: url)
+    }
+    
+    func fetchGenre(mediaType: MediaType) async throws -> Genre {
+        let url = try makeURL(path: "genre/\(mediaType.rawValue)/list", queryItems: [])
+        return try await fetchDecodableRequest(url: url)
+    }
+    
+    func fetchImage(imagePath: String) async throws -> Data {
+        let url = try makeURL(path: imagePath, queryItems: [], isImageURL: true)
+        return try await fetchDataRequest(url: url)
     }
 }
