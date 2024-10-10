@@ -82,4 +82,18 @@ final class NetworkManager {
         return try await fetchRequest(url: url)
     }
     
+    func fetchImage(imagePath: String) async throws -> Data {
+        let url = URL(string: APIKey.imageURL + imagePath)
+        guard let url = url else {
+            throw NetworkError.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw NetworkError.invalidResponse
+        }
+        
+        return data
+    }
 }
