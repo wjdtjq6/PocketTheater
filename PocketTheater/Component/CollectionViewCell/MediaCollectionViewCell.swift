@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Then
 
-final class MediaCollectionViewCell: UICollectionViewCell {
+final class MediaCollectionViewCell: BaseCollectionViewCell {
     
     private let mediaImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
@@ -18,25 +18,14 @@ final class MediaCollectionViewCell: UICollectionViewCell {
         $0.layer.cornerRadius = 10
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setUpHierarchy()
-        setUpLayout()
-    }
-    
-    func setUpHierarchy() {
+    override func setHierarchy() {
         addSubview(mediaImageView)
     }
-    func setUpLayout() {
+    
+    override func setLayout() {
         mediaImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
     }
     
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }
