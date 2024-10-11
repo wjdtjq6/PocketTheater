@@ -46,6 +46,10 @@
 		C4DAFA672CB65A050063B4B3 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA662CB65A050063B4B3 /* LikeView.swift */; };
 		C4DAFA692CB65A0F0063B4B3 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA682CB65A0F0063B4B3 /* LikeViewController.swift */; };
 		C4DAFA6C2CB698C10063B4B3 /* LikeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA6B2CB698C10063B4B3 /* LikeTable.swift */; };
+		C4DAFA6E2CB7592F0063B4B3 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA6D2CB7592F0063B4B3 /* DetailView.swift */; };
+		C4DAFA702CB759340063B4B3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */; };
+		C4DAFA722CB75A710063B4B3 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */; };
+		C4DAFA9B2CB7CF2A0063B4B3 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = C4DAFA9A2CB7CF2A0063B4B3 /* RxGesture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -95,6 +99,9 @@
 		C4DAFA662CB65A050063B4B3 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		C4DAFA682CB65A0F0063B4B3 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
 		C4DAFA6B2CB698C10063B4B3 /* LikeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeTable.swift; sourceTree = "<group>"; };
+		C4DAFA6D2CB7592F0063B4B3 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				99AF48632CB6B30E006F0B38 /* Differentiator in Frameworks */,
+				C4DAFA9B2CB7CF2A0063B4B3 /* RxGesture in Frameworks */,
 				996BD14C2CB52F61007F6C57 /* RealmSwift in Frameworks */,
 				996BD1442CB52EF0007F6C57 /* SnapKit in Frameworks */,
 				996BD1412CB52EDE007F6C57 /* Kingfisher in Frameworks */,
@@ -277,6 +285,9 @@
 		996BD1382CB52DF4007F6C57 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				C4DAFA6D2CB7592F0063B4B3 /* DetailView.swift */,
+				C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */,
+				C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -348,6 +359,7 @@
 				996BD14B2CB52F61007F6C57 /* RealmSwift */,
 				99AF48622CB6B30E006F0B38 /* Differentiator */,
 				99AF48642CB6B30E006F0B38 /* RxDataSources */,
+				C4DAFA9A2CB7CF2A0063B4B3 /* RxGesture */,
 			);
 			productName = PocketTheater;
 			productReference = 996BD1032CB52780007F6C57 /* PocketTheater.app */;
@@ -384,6 +396,7 @@
 				996BD1452CB52F14007F6C57 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				996BD14A2CB52F61007F6C57 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				99AF48612CB6B30E006F0B38 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				C4DAFA992CB7CF2A0063B4B3 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = 996BD1042CB52780007F6C57 /* Products */;
 			projectDirPath = "";
@@ -417,15 +430,18 @@
 				996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */,
 				996BD1622CB53A96007F6C57 /* Resource.swift in Sources */,
 				C4DAFA6C2CB698C10063B4B3 /* LikeTable.swift in Sources */,
+				C4DAFA722CB75A710063B4B3 /* DetailViewModel.swift in Sources */,
 				C4DAFA5F2CB659BF0063B4B3 /* HomeView.swift in Sources */,
 				996BD15C2CB53808007F6C57 /* UIViewController+Extension.swift in Sources */,
 				BF35BF042CB6592C002970EF /* NetworkManager.swift in Sources */,
 				996BD1072CB52780007F6C57 /* AppDelegate.swift in Sources */,
+				C4DAFA6E2CB7592F0063B4B3 /* DetailView.swift in Sources */,
 				C4DAFA612CB659C60063B4B3 /* HomeViewController.swift in Sources */,
 				99AF487F2CB80E33006F0B38 /* SearchViewRecommandMediaCell.swift in Sources */,
 				996BD1212CB528D4007F6C57 /* APIKey.swift in Sources */,
 				996BD1582CB53260007F6C57 /* NSObjectProtocol+Extension.swift in Sources */,
 				996BD15A2CB53354007F6C57 /* BaseViewController.swift in Sources */,
+				C4DAFA702CB759340063B4B3 /* DetailViewController.swift in Sources */,
 				996BD1092CB52780007F6C57 /* SceneDelegate.swift in Sources */,
 				BF35BF0A2CB69364002970EF /* Genre.swift in Sources */,
 				C4DAFA652CB659F40063B4B3 /* SearchViewController.swift in Sources */,
@@ -713,6 +729,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		C4DAFA992CB7CF2A0063B4B3 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -755,6 +779,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 99AF48612CB6B30E006F0B38 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		C4DAFA9A2CB7CF2A0063B4B3 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4DAFA992CB7CF2A0063B4B3 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
