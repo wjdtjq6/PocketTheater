@@ -56,10 +56,10 @@ class DetailView: BaseView {
     }
     
     // 재생 버튼 (폰트 사이즈 수정하기)
-    private let playButton = ActionButton(mode: .play)
+    private let playButton = ActionButton(mode: .play, fontSize: 13)
     
     // 저장 버튼 (폰트 사이즈 수정하기)
-    private let saveButton = ActionButton(mode: .save)
+    private let saveButton = ActionButton(mode: .save, fontSize: 13)
     
     // 미디어 설명
     let overviewLabel = UILabel().then {
