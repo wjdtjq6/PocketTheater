@@ -18,6 +18,26 @@ class DetailView: BaseView {
         $0.backgroundColor = .red
     }
     
+    // 스크롤뷰
+    private lazy var scrollView = UIScrollView().then {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        $0.showsVerticalScrollIndicator = false
+        $0.addSubview(container)
+    }
+    
+    // 스크롤뷰 안에 넣을 컨테이너
+    private lazy var container = UIView().then {
+        $0.addSubview(titleLabel)
+        $0.addSubview(voteAverageLabel)
+        $0.addSubview(playButton)
+        $0.addSubview(saveButton)
+        $0.addSubview(overviewLabel)
+        $0.addSubview(castLabel)
+        $0.addSubview(creatorLabel)
+        $0.addSubview(similarContentLabel)
+        $0.addSubview(searchCollectionView)
+    }
+    
     // 미디어 제목
     private let titleLabel = UILabel().then {
         $0.font = Resource.Font.bold17
@@ -44,6 +64,7 @@ class DetailView: BaseView {
     // 미디어 설명
     let overviewLabel = UILabel().then {
         $0.numberOfLines = 2
+        $0.font = Resource.Font.regular14
         $0.textColor = Resource.Color.white
         $0.isUserInteractionEnabled = true
         // 임시 텍스트 확인용
@@ -66,8 +87,24 @@ class DetailView: BaseView {
         $0.text = "출연: 켈시 맨, 피트 닥터"
     }
     
+    // 비슷한 콘텐츠
+    private let similarContentLabel = UILabel().then {
+        $0.font = Resource.Font.bold15
+        $0.textColor = Resource.Color.white
+        $0.text = "비슷한 콘텐츠"
+    }
+    
+    // 비슷한 콘텐츠 컬렉션뷰
+    private lazy var searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: Resource.CollectionViewLayout.MediaLayout()).then {
+        $0.backgroundColor = Resource.Color.black
+        $0.isScrollEnabled = false
+        $0.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: MediaCollectionViewCell.identifier)
+        $0.dataSource = self
+    }
+    
     override func setHierarchy() {
-        [imageView, titleLabel, voteAverageLabel, playButton, saveButton, overviewLabel, castLabel, creatorLabel].forEach { self.addSubview($0) }
+        self.addSubview(imageView)
+        self.addSubview(scrollView)
     }
     
     override func setLayout() {
@@ -79,47 +116,87 @@ class DetailView: BaseView {
             make.height.equalTo(200)
         }
         
+        scrollView.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom)
+            make.horizontalEdges.bottom.equalTo(safeArea)
+        }
+        
+        container.snp.makeConstraints { make in
+            make.top.equalTo(scrollView.snp.top)
+            make.horizontalEdges.bottom.equalToSuperview()
+            make.width.equalToSuperview()
+            make.bottom.equalTo(searchCollectionView.snp.bottom)
+        }
+        
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(16)
-            make.horizontalEdges.equalTo(safeArea).inset(16)
+            make.top.equalTo(container.snp.top).offset(16)
+            make.horizontalEdges.equalTo(container).inset(16)
             make.height.equalTo(20)
         }
         
         voteAverageLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom)
-            make.horizontalEdges.equalTo(safeArea).inset(16)
+            make.horizontalEdges.equalTo(container).inset(16)
             make.height.equalTo(20)
         }
         
         playButton.snp.makeConstraints { make in
             make.top.equalTo(voteAverageLabel.snp.bottom).offset(16)
-            make.horizontalEdges.equalTo(safeArea).inset(16)
+            make.horizontalEdges.equalTo(container).inset(16)
             make.height.equalTo(30)
         }
         
         saveButton.snp.makeConstraints { make in
             make.top.equalTo(playButton.snp.bottom).offset(10)
-            make.horizontalEdges.equalTo(safeArea).inset(16)
+            make.horizontalEdges.equalTo(container).inset(16)
             make.height.equalTo(30)
         }
         
         overviewLabel.snp.makeConstraints { make in
             make.top.equalTo(saveButton.snp.bottom).offset(10)
-            make.horizontalEdges.equalTo(safeArea).inset(16)
+            make.horizontalEdges.equalTo(container).inset(16)
         }
         
         castLabel.snp.makeConstraints { make in
             make.top.equalTo(overviewLabel.snp.bottom).offset(16)
-            make.horizontalEdges.equalTo(safeArea).inset(16)
-            make.height.equalTo(20)
+            make.horizontalEdges.equalTo(container).inset(16)
+            make.height.equalTo(16)
         }
         
         creatorLabel.snp.makeConstraints { make in
             make.top.equalTo(castLabel.snp.bottom)
-            make.horizontalEdges.equalTo(safeArea).inset(16)
+            make.horizontalEdges.equalTo(container).inset(16)
+            make.height.equalTo(16)
+        }
+        
+        similarContentLabel.snp.makeConstraints { make in
+            make.top.equalTo(creatorLabel.snp.bottom).offset(16)
+            make.horizontalEdges.equalTo(container).inset(16)
             make.height.equalTo(20)
+        }
+        
+        searchCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(similarContentLabel.snp.bottom).offset(8)
+            make.horizontalEdges.equalTo(container)
+            make.height.equalTo(600) /// 임의 높이 설정 -> `기기별 대응 필요`
         }
     }
     
+}
+
+extension DetailView: UICollectionViewDataSource {
+
+    // 비슷한 콘텐츠 개수
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 9
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaCollectionViewCell.identifier, for: indexPath) as? MediaCollectionViewCell else {
+            return MediaCollectionViewCell()
+        }
+        
+        return cell
+    }
     
 }

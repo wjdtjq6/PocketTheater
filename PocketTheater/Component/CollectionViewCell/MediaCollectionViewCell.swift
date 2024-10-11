@@ -20,7 +20,6 @@ final class MediaCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .white
         setUpHierarchy()
         setUpLayout()
     }
