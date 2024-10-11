@@ -52,6 +52,7 @@
 		C4DAFA702CB759340063B4B3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */; };
 		C4DAFA722CB75A710063B4B3 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */; };
 		C4DAFA9B2CB7CF2A0063B4B3 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = C4DAFA9A2CB7CF2A0063B4B3 /* RxGesture */; };
+		C4F55F372CB95A2900B8243F /* DetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F55F362CB95A2900B8243F /* DetailHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -106,6 +107,7 @@
 		C4DAFA6D2CB7592F0063B4B3 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		C4F55F362CB95A2900B8243F /* DetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -291,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				C4DAFA6D2CB7592F0063B4B3 /* DetailView.swift */,
+				C4F55F362CB95A2900B8243F /* DetailHeaderView.swift */,
 				C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */,
 				C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */,
 			);
@@ -447,6 +450,7 @@
 				996BD1212CB528D4007F6C57 /* APIKey.swift in Sources */,
 				996BD1582CB53260007F6C57 /* NSObjectProtocol+Extension.swift in Sources */,
 				996BD15A2CB53354007F6C57 /* BaseViewController.swift in Sources */,
+				C4F55F372CB95A2900B8243F /* DetailHeaderView.swift in Sources */,
 				C4DAFA702CB759340063B4B3 /* DetailViewController.swift in Sources */,
 				996BD1092CB52780007F6C57 /* SceneDelegate.swift in Sources */,
 				BF35BF0A2CB69364002970EF /* Genre.swift in Sources */,

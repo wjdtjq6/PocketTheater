@@ -53,8 +53,8 @@ enum Resource {
         static let red = UIColor(hex: "FC2125") // 레드
     }
     
+    // MARK: 검색화면 영화 & 시리즈, 디테일 화면 비슷한 콘텐츠 레이아웃
     enum CollectionViewLayout {
-        //MARK: 검색화면 영화 & 시리즈, 디테일 화면 비슷한 콘텐츠 레이아웃
         static func MediaLayout() -> UICollectionViewCompositionalLayout {
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                  heightDimension: .fractionalHeight(1.0))
@@ -70,6 +70,28 @@ enum Resource {
             section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
 
             let layout = UICollectionViewCompositionalLayout(section: section)
+            return layout
+        }
+        
+        
+        static func detailViewLayout() -> UICollectionViewLayout {
+            let layout = UICollectionViewCompositionalLayout { _, _ in
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 4, trailing: 4)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(270))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: DetailHeaderView.elementKind, alignment: .top)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+                section.boundarySupplementaryItems = [header]
+                return section
+            }
+            
             return layout
         }
     }
