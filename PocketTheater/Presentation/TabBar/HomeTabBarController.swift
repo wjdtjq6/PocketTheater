@@ -19,7 +19,10 @@ final class HomeTabBarController: UITabBarController {
         let search = createTabBarItem(title: "Top Search", image: Resource.Image.search, viewController: SearchViewController())
         let like = createTabBarItem(title: "Like", image: Resource.Image.smileFace, viewController: LikeViewController())
         
-        let viewControllers = [home, search, like]
+        // 디테일 탭 임시 추가
+        let detail = createTabBarItem(title: "Detail(임시)", image: Resource.Image.plus, viewController: DetailViewController())
+        
+        let viewControllers = [home, search, like, detail]
         self.setViewControllers(viewControllers, animated: true)
     }
     

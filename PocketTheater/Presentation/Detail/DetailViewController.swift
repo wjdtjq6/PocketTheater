@@ -11,11 +11,18 @@ import RxGesture
 import RxSwift
 import SnapKit
 
-class DetailViewController: BaseViewController {
+final class DetailViewController: BaseViewController {
+    
+    private enum DetailSection: CaseIterable {
+        case similar
+    }
     
     private let detailView = DetailView()
     private let viewModel = DetailViewModel()
     private let disposeBag = DisposeBag()
+    
+    // private var dataSource: UICollectionViewDiffableDataSource<DetailSection, Result>!
+    private var dataSource: UICollectionViewDiffableDataSource<DetailSection, UIImage>!
     
     // 미디어 설명 레이블 (더보기 처리)
     private var isTapped = false
@@ -27,11 +34,13 @@ class DetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
+        configureDataSource()
+        updateSnapshot()
     }
     
     private func bind() {
         let input = DetailViewModel.Input()
-        // let output = viewModel.transform(input: input)
+        let _ = viewModel.transform(input: input)
 
         detailView.overviewLabel.rx.tapGesture()
             .when(.recognized)  /// tapGesture()를 그냥 사용 시, sampleView 바인딩 할 때 event가 emit되므로 해당 코드 추가
@@ -40,6 +49,38 @@ class DetailViewController: BaseViewController {
                 self?.toggleOverviewLabel()
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func configureCellRegistration() -> UICollectionView.CellRegistration<MediaCollectionViewCell, UIImage> {
+        return UICollectionView.CellRegistration { cell, indexPath, itemIdentifier in
+            Task {
+                do {
+                    // try await cell.updateCell(itemIdentifier)
+                    try await cell.updateCellTest(itemIdentifier)
+                } catch {
+                    print("Failed to update cell: \(error)")
+                }
+            }
+        }
+    }
+    
+    private func configureDataSource() {
+        let cellRegistration = configureCellRegistration()
+        
+        dataSource = UICollectionViewDiffableDataSource(collectionView: detailView.searchCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            let cell = collectionView.dequeueConfiguredReusableCell(
+                using: cellRegistration,
+                for: indexPath,
+                item: itemIdentifier)
+            return cell
+        })
+    }
+    
+    private func updateSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<DetailSection, UIImage>()
+        snapshot.appendSections(DetailSection.allCases)
+        snapshot.appendItems([Resource.Image.download!], toSection: .similar)
+        dataSource.applySnapshotUsingReloadData(snapshot)
     }
 
     private func toggleOverviewLabel() {

@@ -95,10 +95,9 @@ class DetailView: BaseView {
     }
     
     // 비슷한 콘텐츠 컬렉션뷰
-    private lazy var searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: Resource.CollectionViewLayout.MediaLayout()).then {
+    lazy var searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: Resource.CollectionViewLayout.MediaLayout()).then {
         $0.backgroundColor = Resource.Color.black
         $0.isScrollEnabled = false
-        $0.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: MediaCollectionViewCell.identifier)
         $0.dataSource = self
     }
     

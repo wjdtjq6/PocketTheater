@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 import SnapKit
 import Then
 
@@ -26,6 +27,20 @@ final class MediaCollectionViewCell: BaseCollectionViewCell {
         mediaImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    func updateCell(_ data: Result) async throws {
+        guard let path = data.backdropPath else { return }
+        let image = try await NetworkManager.shared.fetchImage(imagePath: path)
+        if Task.isCancelled { return }
+        mediaImageView.image = UIImage(data: image)
+    }
+    
+    func updateCellTest(_ data: UIImage) async throws {
+        // guard let path = data.backdropPath else { return }
+        // let image = try await NetworkManager.shared.fetchImage(imagePath: path)
+        // if Task.isCancelled { return }
+        mediaImageView.image = data
     }
     
 }

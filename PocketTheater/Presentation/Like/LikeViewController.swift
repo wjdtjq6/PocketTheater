@@ -11,13 +11,11 @@ import RxGesture
 import RxSwift
 
 class LikeViewController: BaseViewController {
-
-    // private let likeView = LikeView()
-    private let detailView = DetailView()
+    
+    private let likeView = LikeView()
     
     override func loadView() {
-        // view = likeView
-        view = detailView
+        view = likeView
     }
     
     override func viewDidLoad() {
