@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import Kingfisher
 import SnapKit
 import Then
 
-final class MediaCollectionViewCell: UICollectionViewCell {
+final class MediaCollectionViewCell: BaseCollectionViewCell {
     
     private let mediaImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
@@ -18,26 +19,26 @@ final class MediaCollectionViewCell: UICollectionViewCell {
         $0.layer.cornerRadius = 10
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contentView.backgroundColor = .white
-        setUpHierarchy()
-        setUpLayout()
-    }
-    
-    func setUpHierarchy() {
+    override func setHierarchy() {
         addSubview(mediaImageView)
     }
-    func setUpLayout() {
+    
+    override func setLayout() {
         mediaImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
     }
     
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func updateCell(_ data: Result) async throws {
+        guard let path = data.backdropPath else { return }
+        let image = try await NetworkManager.shared.fetchImage(imagePath: path)
+        if Task.isCancelled { return }
+        mediaImageView.image = UIImage(data: image)
     }
+
+    /// `추후 네트워크 연결 후 삭제할 메서드 입니다.`
+    func updateCellTest(_ data: UIImage) async throws {
+        mediaImageView.image = data
+    }
+    
 }

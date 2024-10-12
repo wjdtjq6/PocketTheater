@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import SnapKit
+import Then
 
 class LikeView: BaseView {
     
@@ -14,9 +16,9 @@ class LikeView: BaseView {
         $0.text = "좋아요 화면입니다."
         $0.textColor = Resource.Color.white
     }
-    
+
     override func setHierarchy() {
-        self.addSubview(testLabel)
+        [testLabel].forEach { self.addSubview($0) }
     }
     
     override func setLayout() {

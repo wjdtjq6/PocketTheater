@@ -16,7 +16,7 @@ final class ActionButton: UIButton {
         case save // 디테일뷰에서 사용
     }
     
-    init(mode: ButtonMode, fontSize: CGFloat? = nil) {
+    init(mode: ButtonMode, fontSize: CGFloat = 14) {
         super.init(frame: .zero)
         configureButton(for: mode, fontSize: fontSize)
     }
@@ -68,6 +68,9 @@ final class ActionButton: UIButton {
             // 이미지도 타이틀 크기과 맞춤
             let symbolConfig = UIImage.SymbolConfiguration(pointSize: fontSize, weight: .medium)
             config.image = image?.withConfiguration(symbolConfig)
+        } else {
+            // 폰트 크기 미지정 시 기본 이미지 설정
+            config.image = image
         }
         
         self.configuration = config

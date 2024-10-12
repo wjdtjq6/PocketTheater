@@ -39,6 +39,8 @@
 		BF35BF082CB675FD002970EF /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF35BF072CB675FD002970EF /* Media.swift */; };
 		BF35BF0A2CB69364002970EF /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF35BF092CB69364002970EF /* Genre.swift */; };
 		BF35BF0C2CB69569002970EF /* Cast.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF35BF0B2CB69569002970EF /* Cast.swift */; };
+		C46C20DE2CB912070025D4F1 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C20DD2CB912070025D4F1 /* BaseCollectionViewCell.swift */; };
+		C46C20E02CB913F70025D4F1 /* LikeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C20DF2CB913F70025D4F1 /* LikeRepository.swift */; };
 		C4DAFA5F2CB659BF0063B4B3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA5E2CB659BF0063B4B3 /* HomeView.swift */; };
 		C4DAFA612CB659C60063B4B3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA602CB659C60063B4B3 /* HomeViewController.swift */; };
 		C4DAFA632CB659E50063B4B3 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA622CB659E50063B4B3 /* SearchView.swift */; };
@@ -46,6 +48,13 @@
 		C4DAFA672CB65A050063B4B3 /* LikeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA662CB65A050063B4B3 /* LikeView.swift */; };
 		C4DAFA692CB65A0F0063B4B3 /* LikeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA682CB65A0F0063B4B3 /* LikeViewController.swift */; };
 		C4DAFA6C2CB698C10063B4B3 /* LikeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA6B2CB698C10063B4B3 /* LikeTable.swift */; };
+		C4DAFA6E2CB7592F0063B4B3 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA6D2CB7592F0063B4B3 /* DetailView.swift */; };
+		C4DAFA702CB759340063B4B3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */; };
+		C4DAFA722CB75A710063B4B3 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */; };
+		C4DAFA9B2CB7CF2A0063B4B3 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = C4DAFA9A2CB7CF2A0063B4B3 /* RxGesture */; };
+		C4F55F372CB95A2900B8243F /* DetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F55F362CB95A2900B8243F /* DetailHeaderView.swift */; };
+		C4F55F3A2CB98E9D00B8243F /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F55F392CB98E9D00B8243F /* PlayView.swift */; };
+		C4F55F3E2CB98EC800B8243F /* PlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F55F3D2CB98EC800B8243F /* PlayViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -88,6 +97,8 @@
 		BF35BF072CB675FD002970EF /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		BF35BF092CB69364002970EF /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		BF35BF0B2CB69569002970EF /* Cast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cast.swift; sourceTree = "<group>"; };
+		C46C20DD2CB912070025D4F1 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
+		C46C20DF2CB913F70025D4F1 /* LikeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeRepository.swift; sourceTree = "<group>"; };
 		C4DAFA5E2CB659BF0063B4B3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C4DAFA602CB659C60063B4B3 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C4DAFA622CB659E50063B4B3 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -95,6 +106,12 @@
 		C4DAFA662CB65A050063B4B3 /* LikeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeView.swift; sourceTree = "<group>"; };
 		C4DAFA682CB65A0F0063B4B3 /* LikeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewController.swift; sourceTree = "<group>"; };
 		C4DAFA6B2CB698C10063B4B3 /* LikeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeTable.swift; sourceTree = "<group>"; };
+		C4DAFA6D2CB7592F0063B4B3 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		C4F55F362CB95A2900B8243F /* DetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHeaderView.swift; sourceTree = "<group>"; };
+		C4F55F392CB98E9D00B8243F /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
+		C4F55F3D2CB98EC800B8243F /* PlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				99AF48632CB6B30E006F0B38 /* Differentiator in Frameworks */,
+				C4DAFA9B2CB7CF2A0063B4B3 /* RxGesture in Frameworks */,
 				996BD14C2CB52F61007F6C57 /* RealmSwift in Frameworks */,
 				996BD1442CB52EF0007F6C57 /* SnapKit in Frameworks */,
 				996BD1412CB52EDE007F6C57 /* Kingfisher in Frameworks */,
@@ -212,6 +230,7 @@
 			children = (
 				996BD1592CB53354007F6C57 /* BaseViewController.swift */,
 				996BD15F2CB539EB007F6C57 /* BaseView.swift */,
+				C46C20DD2CB912070025D4F1 /* BaseCollectionViewCell.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -241,8 +260,9 @@
 				C4DAFA5C2CB659A80063B4B3 /* Home */,
 				996BD1342CB52DAF007F6C57 /* Trending */,
 				996BD1352CB52DB8007F6C57 /* Search */,
-				996BD1362CB52DBC007F6C57 /* Like */,
 				996BD1382CB52DF4007F6C57 /* Detail */,
+				996BD1362CB52DBC007F6C57 /* Like */,
+				C4F55F382CB98E8300B8243F /* Play */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -277,6 +297,10 @@
 		996BD1382CB52DF4007F6C57 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
+				C4DAFA6D2CB7592F0063B4B3 /* DetailView.swift */,
+				C4F55F362CB95A2900B8243F /* DetailHeaderView.swift */,
+				C4DAFA6F2CB759340063B4B3 /* DetailViewController.swift */,
+				C4DAFA712CB75A710063B4B3 /* DetailViewModel.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -318,8 +342,18 @@
 			isa = PBXGroup;
 			children = (
 				C4DAFA6B2CB698C10063B4B3 /* LikeTable.swift */,
+				C46C20DF2CB913F70025D4F1 /* LikeRepository.swift */,
 			);
 			path = Database;
+			sourceTree = "<group>";
+		};
+		C4F55F382CB98E8300B8243F /* Play */ = {
+			isa = PBXGroup;
+			children = (
+				C4F55F392CB98E9D00B8243F /* PlayView.swift */,
+				C4F55F3D2CB98EC800B8243F /* PlayViewController.swift */,
+			);
+			path = Play;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -348,6 +382,7 @@
 				996BD14B2CB52F61007F6C57 /* RealmSwift */,
 				99AF48622CB6B30E006F0B38 /* Differentiator */,
 				99AF48642CB6B30E006F0B38 /* RxDataSources */,
+				C4DAFA9A2CB7CF2A0063B4B3 /* RxGesture */,
 			);
 			productName = PocketTheater;
 			productReference = 996BD1032CB52780007F6C57 /* PocketTheater.app */;
@@ -384,6 +419,7 @@
 				996BD1452CB52F14007F6C57 /* XCRemoteSwiftPackageReference "RxSwift" */,
 				996BD14A2CB52F61007F6C57 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				99AF48612CB6B30E006F0B38 /* XCRemoteSwiftPackageReference "RxDataSources" */,
+				C4DAFA992CB7CF2A0063B4B3 /* XCRemoteSwiftPackageReference "RxGesture" */,
 			);
 			productRefGroup = 996BD1042CB52780007F6C57 /* Products */;
 			projectDirPath = "";
@@ -416,23 +452,31 @@
 				99AF487A2CB7C3E5006F0B38 /* MediaCollectionViewCell.swift in Sources */,
 				996BD16B2CB659DA007F6C57 /* ActionButton.swift in Sources */,
 				996BD1622CB53A96007F6C57 /* Resource.swift in Sources */,
+				C4F55F3A2CB98E9D00B8243F /* PlayView.swift in Sources */,
 				C4DAFA6C2CB698C10063B4B3 /* LikeTable.swift in Sources */,
+				C4DAFA722CB75A710063B4B3 /* DetailViewModel.swift in Sources */,
 				C4DAFA5F2CB659BF0063B4B3 /* HomeView.swift in Sources */,
 				996BD15C2CB53808007F6C57 /* UIViewController+Extension.swift in Sources */,
 				BF35BF042CB6592C002970EF /* NetworkManager.swift in Sources */,
 				996BD1072CB52780007F6C57 /* AppDelegate.swift in Sources */,
+				C4DAFA6E2CB7592F0063B4B3 /* DetailView.swift in Sources */,
 				C4DAFA612CB659C60063B4B3 /* HomeViewController.swift in Sources */,
 				99AF487F2CB80E33006F0B38 /* SearchViewRecommandMediaCell.swift in Sources */,
 				996BD1212CB528D4007F6C57 /* APIKey.swift in Sources */,
 				996BD1582CB53260007F6C57 /* NSObjectProtocol+Extension.swift in Sources */,
 				996BD15A2CB53354007F6C57 /* BaseViewController.swift in Sources */,
+				C4F55F372CB95A2900B8243F /* DetailHeaderView.swift in Sources */,
+				C4DAFA702CB759340063B4B3 /* DetailViewController.swift in Sources */,
 				996BD1092CB52780007F6C57 /* SceneDelegate.swift in Sources */,
 				BF35BF0A2CB69364002970EF /* Genre.swift in Sources */,
 				C4DAFA652CB659F40063B4B3 /* SearchViewController.swift in Sources */,
+				C46C20E02CB913F70025D4F1 /* LikeRepository.swift in Sources */,
 				C4DAFA692CB65A0F0063B4B3 /* LikeViewController.swift in Sources */,
 				C4DAFA632CB659E50063B4B3 /* SearchView.swift in Sources */,
 				99AF487C2CB7CB8C006F0B38 /* SearchViewModel.swift in Sources */,
+				C4F55F3E2CB98EC800B8243F /* PlayViewController.swift in Sources */,
 				996BD12B2CB52A9D007F6C57 /* Constant.swift in Sources */,
+				C46C20DE2CB912070025D4F1 /* BaseCollectionViewCell.swift in Sources */,
 				C4DAFA672CB65A050063B4B3 /* LikeView.swift in Sources */,
 				996BD1602CB539EB007F6C57 /* BaseView.swift in Sources */,
 				BF35BF082CB675FD002970EF /* Media.swift in Sources */,
@@ -713,6 +757,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		C4DAFA992CB7CF2A0063B4B3 /* XCRemoteSwiftPackageReference "RxGesture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxGesture.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -755,6 +807,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 99AF48612CB6B30E006F0B38 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		C4DAFA9A2CB7CF2A0063B4B3 /* RxGesture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4DAFA992CB7CF2A0063B4B3 /* XCRemoteSwiftPackageReference "RxGesture" */;
+			productName = RxGesture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -5,10 +5,13 @@
 //  Created by junehee on 10/9/24.
 //
 
-import Foundation
+import UIKit
+import RxCocoa
+import RxGesture
+import RxSwift
 
 class LikeViewController: BaseViewController {
-
+    
     private let likeView = LikeView()
     
     override func loadView() {
