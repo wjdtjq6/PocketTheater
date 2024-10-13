@@ -44,8 +44,8 @@ final class MediaCollectionViewCell: BaseCollectionViewCell {
 }
 
 extension MediaCollectionViewCell {
-    func configure(with item: MediaItem) {
-        if let imageUrlString = item.imageUrl,
+    func configure(with item: Result) {
+        if let imageUrlString = item.posterPath,
            let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500\(imageUrlString)") {
             DispatchQueue.main.async {
                 self.mediaImageView.kf.setImage(with: imageUrl)
