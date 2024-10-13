@@ -12,4 +12,5 @@ typealias MediaSection = SectionModel<String, MediaItem>
 struct MediaItem {
     let title: String
     let imageUrl: String?
+    let id: Int
 }

@@ -26,36 +26,35 @@ final class SearchViewController: BaseViewController {
     }
     
     private func bind() {
+        
         let dataSource = RxCollectionViewSectionedReloadDataSource<MediaSection>(
-               configureCell: { dataSource, collectionView, indexPath, item in
-                   let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaPlayCollectionViewCell.identifier, for: indexPath) as! MediaPlayCollectionViewCell
-//                   cell.configure()
-                   return cell
-               },
-               configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-                   let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MediaSectionHeaderView.identifier, for: indexPath) as! MediaSectionHeaderView
-                   let section = dataSource[indexPath.section]
-                   header.configure(with: section.model)
-                   return header
-               }
-           )
-           
-           searchView.searchCollectionView.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaSectionHeaderView.identifier)
-           
-           let input = SearchViewModel.Input(
-               searchText: searchView.searchBar.rx.text.orEmpty,
-               itemSelected: searchView.searchCollectionView.rx.itemSelected
-               
-           )
-           
-           let output = viewModel.transform(input: input)
-           
-           output.searchResults
-               .map { [
-                   MediaSection(model: "추천 시리즈 & 영화", items: $0)
-               ] }
-               .drive(searchView.searchCollectionView.rx.items(dataSource: dataSource))
-               .disposed(by: disposeBag)
+            configureCell: { dataSource, collectionView, indexPath, item in
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaPlayCollectionViewCell.identifier, for: indexPath) as! MediaPlayCollectionViewCell
+                cell.configure(with: item)
+                
+                return cell
+            },
+            configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MediaSectionHeaderView.identifier, for: indexPath) as! MediaSectionHeaderView
+                let section = dataSource[indexPath.section]
+                header.configure(with: section.model)
+                return header
+            }
+        )
+        
+        searchView.searchCollectionView.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaSectionHeaderView.identifier)
+        
+        let input = SearchViewModel.Input(
+            searchText: searchView.searchBar.rx.text.orEmpty,
+            itemSelected: searchView.searchCollectionView.rx.itemSelected
+            
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.mediaResults
+            .drive(searchView.searchCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
     }
     override func setViewController() {
         navigationController?.isNavigationBarHidden = true

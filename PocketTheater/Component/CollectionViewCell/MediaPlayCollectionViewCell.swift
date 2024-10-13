@@ -5,9 +5,8 @@
 //  Created by 김윤우 on 10/12/24.
 //
 
-import Foundation
-
 import UIKit
+import Kingfisher
 
 final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
     private let mediaImageView = UIImageView().then {
@@ -28,7 +27,7 @@ final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.backgroundColor = .gray
+//        contentView.backgroundColor = .gray //MARK: 삭제 요망
         setHierarchy()
         setLayout()
     }
@@ -39,9 +38,10 @@ final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
     }
     override func setLayout() {
         mediaImageView.snp.makeConstraints { make in
-            make.leading.top.bottom.equalToSuperview().inset(8)
-            make.width.equalToSuperview().multipliedBy(0.3)
-            make.height.equalToSuperview().multipliedBy(0.8)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(8)
+            make.width.equalToSuperview().multipliedBy(0.35)
+            make.height.equalToSuperview().multipliedBy(0.82)
         }
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(mediaImageView.snp.trailing).offset(16)
@@ -51,10 +51,25 @@ final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
         playButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(16)
-            make.size.equalTo(60)
+            make.size.equalTo(48)
         }
     }
     func updateCell() {
         
+    }
+}
+
+extension MediaPlayCollectionViewCell {
+    func configure(with item: MediaItem) {
+        titleLabel.text = item.title
+        
+        if let imageUrlString = item.imageUrl,
+           let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500\(imageUrlString)") {
+            DispatchQueue.main.async {
+                self.mediaImageView.kf.setImage(with: imageUrl)
+            }
+        } else {
+            mediaImageView.image = UIImage(named: "placeholder")
+        }
     }
 }
