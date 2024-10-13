@@ -41,7 +41,7 @@ enum Resource {
         static let house = UIImage(systemName:  "house.fill")
         static let playCircle = UIImage(systemName:  "play.circle")
         static let download = UIImage(systemName:  "square.and.arrow.down")
-        static let smileFace = UIImage(systemName:  "face.smiling")
+        static let smileFace = UIImage(systemName:  "face.smiling.inverse")
         static let plus = UIImage(systemName:  "plus")
     }
 
