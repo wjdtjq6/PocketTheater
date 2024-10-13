@@ -22,7 +22,7 @@ final class NetworkManager {
     
     // URLRequest 생성 함수
     private func makeRequest(for url: URL) -> URLRequest {
-        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 5)
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = [
             Header.Authorization.rawValue: APIKey.key,

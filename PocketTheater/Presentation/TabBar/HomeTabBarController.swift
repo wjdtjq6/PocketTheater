@@ -42,7 +42,7 @@ final class HomeTabBarController: UITabBarController {
 =======
 >>>>>>> de9f5b6 (Fix: navigationbar & tabbar 스크롤 시 색상 변경 문제 해결)
         tabBar.tintColor = Resource.Color.white
-        tabBar.unselectedItemTintColor = .gray
+        tabBar.barTintColor = Resource.Color.darkGray
     }
     
 }

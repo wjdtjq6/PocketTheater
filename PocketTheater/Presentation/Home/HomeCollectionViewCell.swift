@@ -38,8 +38,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     private func setUpLayout() {
         mediaImageView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(contentView.snp.width).multipliedBy(1.5)
+            make.edges.equalTo(contentView)
         }
     }
     
@@ -47,8 +46,5 @@ final class HomeCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         disposeBag = DisposeBag()
         mediaImageView.image = nil
-    }
-    
-    func configure(with item: MediaItem) {
     }
 }
