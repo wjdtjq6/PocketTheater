@@ -12,8 +12,8 @@ import RxCocoa
 final class SearchViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     private let networkManager = NetworkManager.shared
-    private let trendingMedia = BehaviorRelay<[MediaItem]>(value: [])
-    private let searchMedia = BehaviorRelay<[MediaItem]>(value: [])
+    private let trendingMedia = BehaviorRelay<[Result]>(value: [])
+    private let searchMedia = BehaviorRelay<[Result]>(value: [])
     private let goToDetail = PublishSubject<Int>()
     private var currentPage = 1
     private var isFetching = false
@@ -41,7 +41,7 @@ final class SearchViewModel: ViewModelType {
         let searchResults = input.searchText
             .debounce(.seconds(1), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .flatMapLatest { [weak self] query -> Observable<[MediaItem]> in
+            .flatMapLatest { [weak self] query -> Observable<[Result]> in
                 guard let self = self, !query.isEmpty else {
                     return .just([])
                 }
@@ -101,7 +101,8 @@ final class SearchViewModel: ViewModelType {
         Task {
             do {
                 let media = try await networkManager.fetchTrending(mediaType: .movie)
-                let items = media.results.map { MediaItem(title: $0.title ?? $0.name ?? "", imageUrl: $0.posterPath, id: $0.id) }
+                print(media.results)
+                let items = media.results.map { $0 }
                 dump(items)
                 DispatchQueue.main.async { [weak self] in
                     self?.trendingMedia.accept(items)
@@ -112,7 +113,7 @@ final class SearchViewModel: ViewModelType {
         }
     }
     
-    private func searchMedia(query: String) -> Observable<[MediaItem]> {
+    private func searchMedia(query: String) -> Observable<[Result]> {
         return Observable.create { [weak self] observer in
             guard let self = self else {
                 observer.onCompleted()
@@ -122,8 +123,8 @@ final class SearchViewModel: ViewModelType {
             Task {
                 do {
                     let media = try await self.networkManager.searchMedia(mediaType: .movie, query: query,page: self.currentPage)
-                    let items = media.results.map { MediaItem(title: $0.title ?? $0.name ?? "", imageUrl: $0.posterPath, id: $0.id) }
-                    dump(items)
+                    let items = media.results.map { $0 }
+                    dump(items,name: "1231231")
                     observer.onNext(items)
                     observer.onCompleted()
                 } catch {
@@ -135,7 +136,7 @@ final class SearchViewModel: ViewModelType {
         }
     }
     
-    private func selectedMedia(_ item: MediaItem) {
+    private func selectedMedia(_ item: Result) {
         goToDetail.onNext(item.id)
         print(item.id)
     }

@@ -60,10 +60,10 @@ final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
 }
 
 extension MediaPlayCollectionViewCell {
-    func configure(with item: MediaItem) {
+    func configure(with item: Result) {
         titleLabel.text = item.title
         
-        if let imageUrlString = item.imageUrl,
+        if let imageUrlString = item.posterPath,
            let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500\(imageUrlString)") {
             DispatchQueue.main.async {
                 self.mediaImageView.kf.setImage(with: imageUrl)
