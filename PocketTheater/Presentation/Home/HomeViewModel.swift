@@ -5,6 +5,7 @@
 //  Created by 소정섭 on 10/10/24.
 //
 
+<<<<<<< HEAD
 import Foundation
 import RxSwift
 import RxCocoa
@@ -19,12 +20,33 @@ extension HomeMediaSection: SectionModelType {
     typealias Item = Result
     
     init(original: HomeMediaSection, items: [Item]) {
+=======
+import RxDataSources
+import RxSwift
+import RxCocoa
+
+struct MediaItem {
+    let id: Int
+    let posterPath: String
+}
+
+struct MediaSection {
+    var header: String
+    var items: [MediaItem]
+}
+
+extension MediaSection: SectionModelType {
+    typealias Item = MediaItem
+    
+    init(original: MediaSection, items: [MediaItem]) {
+>>>>>>> ddcc5a5eb0b761f4e0bc0b12cc508d4d47332407
         self = original
         self.items = items
     }
 }
 
 class HomeViewModel {
+<<<<<<< HEAD
     private let disposeBag = DisposeBag()
     private let genreRepository: GenreRepository
     private var genreCache: [MediaType: [Genres]] = [:]
@@ -165,6 +187,20 @@ class HomeViewModel {
             Task {
                 do {
                     let imageData = try await NetworkManager.shared.fetchImage(imagePath: item.posterPath ?? "")
+=======
+    let sections: BehaviorRelay<[MediaSection]> = BehaviorRelay(value: [])
+    private let disposeBag = DisposeBag()
+    
+    init() async throws {
+        fetchTrendingMedia() // 비동기 호출을 이곳에서 처리하지 않도록 수정
+    }
+    
+    func loadImage(for item: MediaItem) -> Observable<Any?> {
+        return Observable.create { observer in
+            Task {
+                do {
+                    let imageData = try await NetworkManager.shared.fetchImage(imagePath: item.posterPath)
+>>>>>>> ddcc5a5eb0b761f4e0bc0b12cc508d4d47332407
                     observer.onNext(imageData)
                     observer.onCompleted()
                 } catch {
@@ -176,6 +212,7 @@ class HomeViewModel {
             return Disposables.create()
         }
     }
+<<<<<<< HEAD
 }
 
 class GenreRepository {
@@ -189,4 +226,53 @@ class GenreRepository {
         let genreResponse = try await networkManager.fetchGenre(mediaType: mediaType)
         return genreResponse.genres
     }
+=======
+    
+    private func fetchTrendingMedia() {
+        Single<Media>.create { single in
+            Task {
+                do {
+                    let movieMedia = try await NetworkManager.shared.fetchTrending(mediaType: .movie)
+                    single(.success(movieMedia))
+                } catch {
+                    single(.failure(error))
+                }
+            }
+            return Disposables.create()
+        }
+        .flatMap { movieMedia -> Single<(Media, Media)> in
+            Single<Media>.create { single in
+                Task {
+                    do {
+                        let tvMedia = try await NetworkManager.shared.fetchTrending(mediaType: .tv)
+                        single(.success(tvMedia))
+                    } catch {
+                        single(.failure(error))
+                    }
+                }
+                return Disposables.create()
+            }
+            .map { tvMedia in
+                return (movieMedia, tvMedia)
+            }
+        }
+        .map { movieMedia, tvMedia in
+            let movieItems = movieMedia.results.map { MediaItem(id: $0.id, posterPath: $0.posterPath ?? "") }
+            let tvItems = tvMedia.results.map { MediaItem(id: $0.id, posterPath: $0.posterPath ?? "") }
+           
+            // Create featured items from the first 5 movie items
+            let featuredItems = Array(movieItems.prefix(5))
+            
+            return [
+                MediaSection(header: "Featured", items: featuredItems),
+                MediaSection(header: "지금 뜨는 영화", items: movieItems),
+                MediaSection(header: "지금 뜨는 TV 시리즈", items: tvItems)
+            ]
+        }
+        .asObservable()
+        .bind(to: sections)
+        .disposed(by: disposeBag)
+    }
+
+>>>>>>> ddcc5a5eb0b761f4e0bc0b12cc508d4d47332407
 }
