@@ -11,20 +11,24 @@ import Then
 
 class LikeView: BaseView {
     
-    /// `다음에 작업하는 사람이 지우고 작업해 주세요~!`
-    private let testLabel = UILabel().then {
-        $0.text = "좋아요 화면입니다."
-        $0.textColor = Resource.Color.white
+    private let likeTableView = UICollectionView(frame: .zero, collectionViewLayout: Resource.CollectionViewLayout.createMediaPlayCellLayout()).then {
+        $0.backgroundColor = .clear
+        $0.allowsSelection = true
+        $0.bounces = true
+        $0.showsVerticalScrollIndicator = true
+        $0.contentInset = .zero
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        // 셀 등록
+        $0.register(MediaPlayCollectionViewCell.self, forCellWithReuseIdentifier: MediaPlayCollectionViewCell.identifier)
     }
-
+    
     override func setHierarchy() {
-        [testLabel].forEach { self.addSubview($0) }
+        [likeTableView].forEach { self.addSubview($0) }
     }
     
     override func setLayout() {
-        testLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.height.equalTo(100)
+        likeTableView.snp.makeConstraints { make in
+            make.top.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
     

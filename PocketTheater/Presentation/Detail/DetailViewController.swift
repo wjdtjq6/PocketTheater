@@ -91,7 +91,7 @@ final class DetailViewController: BaseViewController {
 }
 
 extension DetailViewController {
-    static func dataSource() -> RxCollectionViewSectionedReloadDataSource<DetailDataSection> {
+    fileprivate static func dataSource() -> RxCollectionViewSectionedReloadDataSource<DetailDataSection> {
         return RxCollectionViewSectionedReloadDataSource<DetailDataSection>(
             configureCell: { dataSource, collectionView, indexPath, data in
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaCollectionViewCell.identifier, for: indexPath) as? MediaCollectionViewCell else { return MediaCollectionViewCell() }
