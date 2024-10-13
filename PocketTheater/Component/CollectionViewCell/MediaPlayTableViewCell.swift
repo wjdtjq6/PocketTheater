@@ -1,14 +1,13 @@
 //
-//  MediaPlayCell.swift
+//  MediaPlayTableViewCell.swift
 //  PocketTheater
 //
-//  Created by 김윤우 on 10/12/24.
+//  Created by junehee on 10/13/24.
 //
 
 import UIKit
-import Kingfisher
 
-final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
+final class MediaPlayTableViewCell: BaseTableViewCell {
     
     private let mediaImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
@@ -29,13 +28,6 @@ final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
         $0.tintColor = Resource.Color.white
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-//        contentView.backgroundColor = .gray //MARK: 삭제 요망
-        setHierarchy()
-        setLayout()
-    }
-    
     override func setHierarchy() {
         addSubview(mediaImageView)
         addSubview(titleLabel)
@@ -44,10 +36,9 @@ final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
     
     override func setLayout() {
         mediaImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(8)
-            make.width.equalToSuperview().multipliedBy(0.35)
-            make.height.equalToSuperview().multipliedBy(0.82)
+            make.leading.top.bottom.equalToSuperview().inset(8)
+            make.width.equalToSuperview().multipliedBy(0.3)
+            make.height.equalToSuperview().multipliedBy(0.8)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -59,28 +50,14 @@ final class MediaPlayCollectionViewCell: BaseCollectionViewCell {
         playButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(16)
-            make.size.equalTo(48)
+            make.size.equalTo(60)
         }
     }
     
-    func updateCell(title: String, image: UIImage) {
-        titleLabel.text = title
-        mediaImageView.image = image
+    func updateCell(item: LikeDataSection.Item) {
+        titleLabel.text = item.title
+        mediaImageView.image = item.image
     }
     
 }
 
-extension MediaPlayCollectionViewCell {
-    func configure(with item: Result) {
-        titleLabel.text = item.title
-        
-        if let imageUrlString = item.posterPath,
-           let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500\(imageUrlString)") {
-            DispatchQueue.main.async {
-                self.mediaImageView.kf.setImage(with: imageUrl)
-            }
-        } else {
-            mediaImageView.image = UIImage(named: "placeholder")
-        }
-    }
-}

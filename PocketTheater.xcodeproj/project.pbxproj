@@ -45,6 +45,8 @@
 		C46C20DE2CB912070025D4F1 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C20DD2CB912070025D4F1 /* BaseCollectionViewCell.swift */; };
 		C46C20E02CB913F70025D4F1 /* LikeRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46C20DF2CB913F70025D4F1 /* LikeRepository.swift */; };
 		C48A01962CBA8AC80033537D /* LikeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48A01952CBA8AC80033537D /* LikeViewModel.swift */; };
+		C4D148A22CBBD42C002F73D5 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D148A12CBBD42C002F73D5 /* BaseTableViewCell.swift */; };
+		C4D148A42CBBD49A002F73D5 /* MediaPlayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D148A32CBBD49A002F73D5 /* MediaPlayTableViewCell.swift */; };
 		C4DAFA5F2CB659BF0063B4B3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA5E2CB659BF0063B4B3 /* HomeView.swift */; };
 		C4DAFA612CB659C60063B4B3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA602CB659C60063B4B3 /* HomeViewController.swift */; };
 		C4DAFA632CB659E50063B4B3 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4DAFA622CB659E50063B4B3 /* SearchView.swift */; };
@@ -107,6 +109,8 @@
 		C46C20DD2CB912070025D4F1 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		C46C20DF2CB913F70025D4F1 /* LikeRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeRepository.swift; sourceTree = "<group>"; };
 		C48A01952CBA8AC80033537D /* LikeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeViewModel.swift; sourceTree = "<group>"; };
+		C4D148A12CBBD42C002F73D5 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		C4D148A32CBBD49A002F73D5 /* MediaPlayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayTableViewCell.swift; sourceTree = "<group>"; };
 		C4DAFA5E2CB659BF0063B4B3 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C4DAFA602CB659C60063B4B3 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		C4DAFA622CB659E50063B4B3 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
@@ -239,6 +243,7 @@
 				996BD1592CB53354007F6C57 /* BaseViewController.swift */,
 				996BD15F2CB539EB007F6C57 /* BaseView.swift */,
 				C46C20DD2CB912070025D4F1 /* BaseCollectionViewCell.swift */,
+				C4D148A12CBBD42C002F73D5 /* BaseTableViewCell.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -329,6 +334,7 @@
 			children = (
 				99AF48792CB7C3E5006F0B38 /* MediaCollectionViewCell.swift */,
 				99AF48AB2CBA8B17006F0B38 /* MediaPlayCollectionViewCell.swift */,
+				C4D148A32CBBD49A002F73D5 /* MediaPlayTableViewCell.swift */,
 			);
 			path = CollectionViewCell;
 			sourceTree = "<group>";
@@ -485,11 +491,13 @@
 				C4F55F3E2CB98EC800B8243F /* PlayViewController.swift in Sources */,
 				996BD12B2CB52A9D007F6C57 /* Constant.swift in Sources */,
 				C46C20DE2CB912070025D4F1 /* BaseCollectionViewCell.swift in Sources */,
+				C4D148A42CBBD49A002F73D5 /* MediaPlayTableViewCell.swift in Sources */,
 				C4DAFA672CB65A050063B4B3 /* LikeView.swift in Sources */,
 				996BD1602CB539EB007F6C57 /* BaseView.swift in Sources */,
 				BF35BF082CB675FD002970EF /* Media.swift in Sources */,
 				996BD1562CB5322F007F6C57 /* ViewModelType.swift in Sources */,
 				996BD13A2CB52E28007F6C57 /* HomeTabBarController.swift in Sources */,
+				C4D148A22CBBD42C002F73D5 /* BaseTableViewCell.swift in Sources */,
 				BF35BF0C2CB69569002970EF /* Cast.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

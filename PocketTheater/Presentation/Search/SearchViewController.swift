@@ -84,9 +84,9 @@ final class SearchViewController: BaseViewController {
         output.gotoDetail
             .subscribe(with: self) { owner , mediaID in
                 //MARK: DetailView mediaID 값 넘겨서 연결
-//                owner.goToOtehrVCwithCompletionHandler(vc: DetailViewController(), mode: .present) { mediaID in
-//                    
-//                }
+               owner.goToOtehrVCwithCompletionHandler(vc: DetailViewController(), mode: .present) { mediaID in
+                   
+               }
             }
             .disposed(by: disposeBag)
     }

@@ -10,13 +10,18 @@ import RxCocoa
 import RxDataSources
 import RxSwift
 
+struct TestData {
+    let title: String
+    let image: UIImage
+}
+
 struct LikeDataSection {
     var header: String
-    var items: [Like]
+    var items: [TestData]   /// `[Like]`
 }
 
 extension LikeDataSection: SectionModelType {
-    typealias Item = Like
+    typealias Item = TestData /// `Like`
     
     init(original: LikeDataSection, items: [Item]) {
         self = original
@@ -30,19 +35,9 @@ final class LikeViewController: BaseViewController {
     private let viewModel = LikeViewModel()
     private let disposeBag = DisposeBag()
     
-    private var dataSource: RxCollectionViewSectionedReloadDataSource<LikeDataSection>!
-    
-    /// 테스트용 더미 데이터
-    // private var items = BehaviorSubject<[SomeType.Model]>(
-    //     value: [
-    //       SomeType.Model(
-    //         model: .date(date: Date()),
-    //         items: (0...100)
-    //           .map(String.init)
-    //           .map { SomeType.Model.Item.record(title: $0) }
-    //       )
-    //     ]
-    //   )
+    private var dataSource: RxTableViewSectionedReloadDataSource<LikeDataSection>!
+
+    private let viewDidLoadTrigger = PublishSubject<Void>()
     
     override func loadView() {
         view = likeView
@@ -51,8 +46,14 @@ final class LikeViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = Constant.Like.navigationTitle
+        likeView.likeTableView.delegate = self
+        // Datasource 생성 & SectionTitle 구성
         dataSource = LikeViewController.dataSource()
+        dataSource.titleForHeaderInSection = { dataSource, index in
+            dataSource.sectionModels[index].header
+        }
         bind()
+        viewDidLoadTrigger.onNext(())
     }
     
     deinit {
@@ -60,28 +61,46 @@ final class LikeViewController: BaseViewController {
     }
     
     private func bind() {
-        let input = LikeViewModel.Input()
-        let _ = viewModel.transform(input: input)
+        let input = LikeViewModel.Input(
+            viewDidLoadTrigger: viewDidLoadTrigger,
+            itemDeleted: likeView.likeTableView.rx.modelDeleted(TestData.self)
+        )
+        let output = viewModel.transform(input: input)
+        
+        // 내가 찜한 리스트 데이터 바인딩
+        output.likeList
+            .bind(to: likeView.likeTableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
        
+        
     }
     
 }
 
 extension LikeViewController {
-    static func dataSource() -> RxCollectionViewSectionedReloadDataSource<LikeDataSection> {
-        return RxCollectionViewSectionedReloadDataSource<LikeDataSection>(
+    static func dataSource() -> RxTableViewSectionedReloadDataSource<LikeDataSection> {
+        return RxTableViewSectionedReloadDataSource<LikeDataSection>(
             configureCell: { dataSource, collectionView, indexPath, data in
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaCollectionViewCell.identifier, for: indexPath) as? MediaCollectionViewCell else { return MediaCollectionViewCell() }
+                guard let cell = collectionView.dequeueReusableCell(withIdentifier: MediaPlayTableViewCell.identifier, for: indexPath) as? MediaPlayTableViewCell else { return MediaPlayTableViewCell() }
                 
+                cell.updateCell(item: data)
                 return cell
-            },
-            configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MediaSectionHeaderView.identifier, for: indexPath) as! MediaSectionHeaderView
-                let section = dataSource[indexPath.section]
-                header.configure(with: section.header)
-                return header
             }
-
         )
+    }
+}
+
+// MARK: 찜한 리스트 테이블뷰 Header 색상 변경
+extension LikeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.textColor = Resource.Color.white
+        
+        if #available(iOS 14.0, *) {
+            header.backgroundConfiguration?.backgroundColor = Resource.Color.black
+    
+        } else {
+            header.contentView.backgroundColor = Resource.Color.black
+        }
     }
 }

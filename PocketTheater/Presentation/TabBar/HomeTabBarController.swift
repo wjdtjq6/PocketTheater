@@ -19,10 +19,7 @@ final class HomeTabBarController: UITabBarController {
         let search = createTabBarItem(title: "Top Search", image: Resource.Image.search, viewController: SearchViewController())
         let like = createTabBarItem(title: "Like", image: Resource.Image.smileFace, viewController: LikeViewController())
         
-        // 디테일 탭 임시 추가
-        let detail = createTabBarItem(title: "Detail(임시)", image: Resource.Image.plus, viewController: DetailViewController())
-        
-        let viewControllers = [home, search, like, detail]
+        let viewControllers = [home, search, like]
         self.setViewControllers(viewControllers, animated: true)
     }
     
@@ -40,9 +37,8 @@ final class HomeTabBarController: UITabBarController {
     
     private func setTabBarUI() {
         tabBar.backgroundColor = Resource.Color.darkGray
-//        tabBar.barTintColor = Resource.Color.white
+        tabBar.barTintColor = Resource.Color.darkGray
         tabBar.tintColor = Resource.Color.white
-        tabBar.unselectedItemTintColor = Resource.Color.white
     }
     
 }

@@ -22,6 +22,23 @@ final class LikeRepository {
         return Array(likeMedia)
     }
     
+    // 찜한 사진 불러오기 (단일)
+    func getLikeMedia(id: String) -> Like? {
+        return realm.object(ofType: Like.self, forPrimaryKey: id)
+    }
+    
+    // 찜한 사진 삭제하기
+    func deleteLikeMedia(media: Like) {
+        do {
+            try realm.write {
+                realm.delete(media)
+                print("Succeed Delete LikeMedia")
+            }
+        } catch {
+            print("Failed Delete LikeMedia", error)
+        }
+    }
+    
     // 스키마버전 확인
     private func getSchemaVersion() {
         print(realm.configuration.schemaVersion)
