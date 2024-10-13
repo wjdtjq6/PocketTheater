@@ -19,7 +19,6 @@ extension UIViewController {
         let vc = vc
         switch mode {
         case .present:
-            vc.modalPresentationStyle = .fullScreen
             present(vc, animated: true) { [weak self] in
                 guard self != nil else { return }
                 completionHandler(vc)
