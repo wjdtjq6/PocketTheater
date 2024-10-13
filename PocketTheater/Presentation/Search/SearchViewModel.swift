@@ -9,65 +9,6 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-//final class SearchViewModel: ViewModelType {
-//
-//    private let disposeBag = DisposeBag()
-//    private let networkMAnager = NetworkManager.shared
-//
-//    // 추천 시리즈 & 영화
-//    private var recommendedItems: [MediaItem] = []
-//    // 검색 결과
-//    private var searchResults: [MediaItem] = []
-//
-//    // 현재 표시할 아이템들
-//    private var currentItems = BehaviorRelay<[MediaItem]>(value: [])
-//
-//    // 검색어
-//    private let searchQuery = BehaviorRelay<String>(value: "")
-//    struct Input {
-//        let searchText: ControlProperty<String>
-//        let itemSelected: ControlEvent<IndexPath>
-//
-//    }
-//
-//    struct Output {
-//        let searchMediaResults: Driver<[MediaItem]>
-////        let recomandMediaResults: BehaviorSubject<[Media]>
-//    }
-//
-//
-//    func transform(input: Input) -> Output {
-//        let searchResults = input.searchText
-//            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
-//            .flatMapLatest { [weak self] query -> Observable<[MediaItem]> in
-//                guard let self = self else { return .empty() }
-//                return self.searchMedia(query: query)
-//            }
-//            .asDriver(onErrorJustReturn: [])
-//
-//        input.itemSelected
-//            .subscribe(onNext: { [weak self] indexPath in
-//                self?.selectedMedia(at: indexPath)
-//            })
-//            .disposed(by: disposeBag)
-//
-//        return Output(searchMediaResults: searchResults)
-//    }
-//
-//    private func searchMedia(query: String) -> Observable<[MediaItem]> {
-//        return .just([
-//            MediaItem(title: "\(query) 결과 1", imageUrl: nil),
-//            MediaItem(title: "\(query) 결과 2", imageUrl: nil),
-//            MediaItem(title: "\(query) 결과 3", imageUrl: nil)
-//        ])
-//    }
-//
-//    private func selectedMedia(at indexPath: IndexPath) {
-//        // 선택된 아이템 처리 로직
-//        print("선택된 아이템: \(indexPath)")
-//    }
-//}
-
 final class SearchViewModel: ViewModelType {
     private let disposeBag = DisposeBag()
     private let networkManager = NetworkManager.shared
@@ -140,13 +81,13 @@ final class SearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        input.prefetchItems
-            .map { $0.map { $0.item } }
-            .debug("adasdasdas")// IndexPath를 Int로 변환
-            .subscribe(onNext: { [weak self] indexes in
-                self?.prefetchIfNeeded(indexes: indexes)
-            })
-            .disposed(by: disposeBag)
+//        input.prefetchItems
+//            .map { $0.map { $0.item } }
+//            .debug("adasdasdas")// IndexPath를 Int로 변환
+//            .subscribe(onNext: { [weak self] indexes in
+//                self?.prefetchIfNeeded(indexes: indexes)
+//            })
+//            .disposed(by: disposeBag)
         
         return Output(
             mediaResults: mediaResults.asDriver(onErrorJustReturn: []),
@@ -198,53 +139,53 @@ final class SearchViewModel: ViewModelType {
         goToDetail.onNext(item.id)
         print(item.id)
     }
-    
-    private func prefetchIfNeeded(indexes: [Int]) {
-        guard let maxIndex = indexes.max() else { return }
-        
-        let totalItemCount = searchMedia.value.count
-        let thresholdIndex = max(0, totalItemCount - 5)  // 마지막 5개 항목에 가까워질 때 추가 페이지 요청
-        
-        print("Prefetch triggered - Max Index: \(maxIndex), Threshold: \(thresholdIndex), Total Items: \(totalItemCount)")
-        print("Current conditions - isFetching: \(isFetching), hasMorePages: \(hasMorePages)")
-        
-        if maxIndex >= thresholdIndex && !isFetching && hasMorePages {
-            print("Conditions met, calling fetchNextPage()")
-            fetchNextPage()
-        } else {
-            print("Conditions not met, skipping fetchNextPage()")
-        }
-    }
-    
-    private func fetchNextPage() {
-        print("fetchNextPage called - Current Page: \(currentPage)")
-        guard !isFetching && hasMorePages else {
-            print("Fetch skipped - isFetching: \(isFetching), hasMorePages: \(hasMorePages)")
-            return
-        }
-        
-        isFetching = true
-        print("Fetching page \(currentPage + 1)")
-        
-        Task {
-            do {
-                let media = try await networkManager.searchMedia(mediaType: .movie, query: currentQuery, page: currentPage + 1)
-                let newItems = media.results.map { MediaItem(title: $0.title ?? $0.name ?? "", imageUrl: $0.posterPath, id: $0.id) }
-                
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    var currentItems = self.searchMedia.value
-                    currentItems.append(contentsOf: newItems)
-                    self.searchMedia.accept(currentItems)
-                    
-                    self.hasMorePages = media.page < media.totalPages
-                    self.currentPage += 1
-                    self.isFetching = false
-                }
-            } catch {
-                print("Error fetching next page: \(error)")
-                self.isFetching = false
-            }
-        }
-    }
+    //MARK: 페이지네이션 수정중
+//    private func prefetchIfNeeded(indexes: [Int]) {
+//        guard let maxIndex = indexes.max() else { return }
+//        
+//        let totalItemCount = searchMedia.value.count
+//        let thresholdIndex = max(0, totalItemCount - 5)
+//        
+//        print("Prefetch triggered - Max Index: \(maxIndex), Threshold: \(thresholdIndex), Total Items: \(totalItemCount)")
+//        print("Current conditions - isFetching: \(isFetching), hasMorePages: \(hasMorePages)")
+//        
+//        if maxIndex >= thresholdIndex && !isFetching && hasMorePages {
+//            print("Conditions met, calling fetchNextPage()")
+//            fetchNextPage()
+//        } else {
+//            print("Conditions not met, skipping fetchNextPage()")
+//        }
+//    }
+//    
+//    private func fetchNextPage() {
+//        print("fetchNextPage called - Current Page: \(currentPage)")
+//        guard !isFetching && hasMorePages else {
+//            print("Fetch skipped - isFetching: \(isFetching), hasMorePages: \(hasMorePages)")
+//            return
+//        }
+//        
+//        isFetching = true
+//        print("Fetching page \(currentPage + 1)")
+//        
+//        Task {
+//            do {
+//                let media = try await networkManager.searchMedia(mediaType: .movie, query: currentQuery, page: currentPage + 1)
+//                let newItems = media.results.map { MediaItem(title: $0.title ?? $0.name ?? "", imageUrl: $0.posterPath, id: $0.id) }
+//                
+//                DispatchQueue.main.async { [weak self] in
+//                    guard let self = self else { return }
+//                    var currentItems = self.searchMedia.value
+//                    currentItems.append(contentsOf: newItems)
+//                    self.searchMedia.accept(currentItems)
+//                    
+//                    self.hasMorePages = media.page < media.totalPages
+//                    self.currentPage += 1
+//                    self.isFetching = false
+//                }
+//            } catch {
+//                print("Error fetching next page: \(error)")
+//                self.isFetching = false
+//            }
+//        }
+//    }
 }

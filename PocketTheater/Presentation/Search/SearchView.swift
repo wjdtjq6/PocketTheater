@@ -53,7 +53,4 @@ class SearchView: BaseView {
             
         }
     }
-    
-    
-    
 }
