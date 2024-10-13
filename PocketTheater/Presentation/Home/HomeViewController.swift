@@ -72,7 +72,7 @@ class HomeViewController: BaseViewController {
                 
         let output = viewModel.transform(input: input)
         
-        let dataSource = RxCollectionViewSectionedReloadDataSource<MediaSection>(
+        let dataSource = RxCollectionViewSectionedReloadDataSource<HomeMediaSection>(
             configureCell: { [weak self] dataSource, collectionView, indexPath, item in
                 if indexPath.section == 0 {
                     // 특집 섹션용 셀
@@ -123,7 +123,7 @@ class HomeViewController: BaseViewController {
                 }
             },
             configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "MediaSectionHeaderView", for: indexPath) as! MediaSectionHeaderView
+                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HomeMediaSectionHeaderView", for: indexPath) as! HomeMediaSectionHeaderView
                 header.titleLabel.text = dataSource[indexPath.section].header
                 return header
             }

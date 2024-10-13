@@ -7,7 +7,7 @@
 
 import RxDataSources
 
-typealias MediaSection = SectionModel<String, Result>
+typealias MediaSection1 = SectionModel<String, Result>
 
 //struct MediaItem {
 //    let title: String

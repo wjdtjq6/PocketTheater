@@ -17,7 +17,7 @@ class HomeView: BaseView {
         $0.backgroundColor = Resource.Color.black
         $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.identifier)
         $0.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: MediaCollectionViewCell.identifier)
-        $0.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaSectionHeaderView.identifier)
+        $0.register(HomeMediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: HomeMediaSectionHeaderView.identifier)
     }
         
     lazy var activityIndicator = UIActivityIndicatorView().then{
@@ -89,7 +89,7 @@ class HomeView: BaseView {
     
 }
 
-class MediaSectionHeaderView: UICollectionReusableView {
+class HomeMediaSectionHeaderView: UICollectionReusableView {
     let titleLabel = UILabel()
     
     override init(frame: CGRect) {

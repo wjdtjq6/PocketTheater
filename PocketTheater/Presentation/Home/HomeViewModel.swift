@@ -10,15 +10,15 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-struct MediaSection {
+struct HomeMediaSection {
     var header: String
     var items: [Result]
 }
 
-extension MediaSection: SectionModelType {
+extension HomeMediaSection: SectionModelType {
     typealias Item = Result
     
-    init(original: MediaSection, items: [Item]) {
+    init(original: HomeMediaSection, items: [Item]) {
         self = original
         self.items = items
     }
@@ -38,7 +38,7 @@ class HomeViewModel {
     }
     
     struct Output {
-        let sections: Driver<[MediaSection]>
+        let sections: Driver<[HomeMediaSection]>
         let isLoading: Driver<Bool>
         let error: Driver<String>
     }
@@ -49,7 +49,7 @@ class HomeViewModel {
         
         let sections = input.loadTrigger
             .do(onNext: { loadingRelay.accept(true) })
-            .flatMapLatest { [weak self] _ -> Observable<[MediaSection]> in
+            .flatMapLatest { [weak self] _ -> Observable<[HomeMediaSection]> in
                 guard let self = self else { return .empty() }
                 return self.fetchTrendingMedia()
                     .do(
@@ -130,7 +130,7 @@ class HomeViewModel {
         return genres
     }
     
-    private func fetchTrendingMedia() -> Observable<[MediaSection]> {
+    private func fetchTrendingMedia() -> Observable<[HomeMediaSection]> {
         Observable.zip(
             fetchTrending(mediaType: .movie),
             fetchTrending(mediaType: .tv)
@@ -138,9 +138,9 @@ class HomeViewModel {
         .map { movieMedia, tvMedia in
             let featuredItem = movieMedia.results.randomElement()
             return [
-                MediaSection(header: "Featured", items: featuredItem.map { [$0] } ?? []),
-                MediaSection(header: "지금 뜨는 영화", items: movieMedia.results),
-                MediaSection(header: "지금 뜨는 TV 시리즈", items: tvMedia.results)
+                HomeMediaSection(header: "Featured", items: featuredItem.map { [$0] } ?? []),
+                HomeMediaSection(header: "지금 뜨는 영화", items: movieMedia.results),
+                HomeMediaSection(header: "지금 뜨는 TV 시리즈", items: tvMedia.results)
             ]
         }
     }

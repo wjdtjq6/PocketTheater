@@ -44,7 +44,6 @@ final class MediaCollectionViewCell: BaseCollectionViewCell {
     
 }
 
-<<<<<<< HEAD
 extension MediaCollectionViewCell {
     func configure(with item: Result) {
         if let imageUrlString = item.posterPath,
@@ -57,5 +56,3 @@ extension MediaCollectionViewCell {
         }
     }
 }
-=======
->>>>>>> de9f5b6 (Fix: navigationbar & tabbar 스크롤 시 색상 변경 문제 해결)

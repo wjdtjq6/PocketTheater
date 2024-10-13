@@ -26,7 +26,7 @@ final class SearchViewModel: ViewModelType {
     }
     
     struct Output {
-        let mediaResults: Driver<[MediaSection]>
+        let mediaResults: Driver<[MediaSection1]>
         let gotoDetail: PublishSubject<Int>
         let isSearching: Driver<Bool>
         let hasNoResults: Driver<Bool>
@@ -64,11 +64,11 @@ final class SearchViewModel: ViewModelType {
         
         let mediaResults = Observable.combineLatest(trendingMedia, searchMedia, isSearching) { trending, search, isSearching in
             if !isSearching {
-                return [MediaSection(model: "추천 시리즈 & 영화", items: trending)]
+                return [MediaSection1(model: "추천 시리즈 & 영화", items: trending)]
             } else if search.isEmpty {
                 return []
             } else {
-                return [MediaSection(model: "영화 & 시리즈", items: search)]
+                return [MediaSection1(model: "영화 & 시리즈", items: search)]
             }
         }
         
