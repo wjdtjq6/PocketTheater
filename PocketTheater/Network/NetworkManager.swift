@@ -76,8 +76,9 @@ final class NetworkManager {
         return try await fetchDecodableRequest(url: url)
     }
     
-    func fetchSearch(mediaType: MediaType, query: String) async throws -> Media {
-        let url = try makeURL(path: "search/\(mediaType.rawValue)", queryItems: [URLQueryItem(name: "query", value: query)])
+    func searchMedia(mediaType: MediaType, query: String, page: Int) async throws -> Media {
+        let url = try makeURL(path: "search/\(mediaType.rawValue)", queryItems: [URLQueryItem(name: "query", value: query),
+                                                                                 URLQueryItem(name: "page", value: "\(page)")])
         return try await fetchDecodableRequest(url: url)
     }
     

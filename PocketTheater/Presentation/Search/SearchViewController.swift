@@ -26,39 +26,73 @@ final class SearchViewController: BaseViewController {
     }
     
     private func bind() {
+        
         let dataSource = RxCollectionViewSectionedReloadDataSource<MediaSection>(
-               configureCell: { dataSource, collectionView, indexPath, item in
-                   let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaPlayCollectionViewCell.identifier, for: indexPath) as! MediaPlayCollectionViewCell
-//                   cell.configure()
-                   return cell
-               },
-               configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
-                   let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MediaSectionHeaderView.identifier, for: indexPath) as! MediaSectionHeaderView
-                   let section = dataSource[indexPath.section]
-                   header.configure(with: section.model)
-                   return header
-               }
-           )
-           
-           searchView.searchCollectionView.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaSectionHeaderView.identifier)
-           
-           let input = SearchViewModel.Input(
-               searchText: searchView.searchBar.rx.text.orEmpty,
-               itemSelected: searchView.searchCollectionView.rx.itemSelected
-               
-           )
-           
-           let output = viewModel.transform(input: input)
-           
-           output.searchResults
-               .map { [
-                   MediaSection(model: "추천 시리즈 & 영화", items: $0)
-               ] }
-               .drive(searchView.searchCollectionView.rx.items(dataSource: dataSource))
-               .disposed(by: disposeBag)
+            configureCell: { dataSource, collectionView, indexPath, item in
+                if dataSource[indexPath.section].model == "추천 시리즈 & 영화" {
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaPlayCollectionViewCell.identifier, for: indexPath) as! MediaPlayCollectionViewCell
+                    cell.configure(with: item)
+                    return cell
+                } else {
+                    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaCollectionViewCell.identifier, for: indexPath) as! MediaCollectionViewCell
+                    cell.configure(with: item)
+                    return cell
+                }
+            },
+            configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+                let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MediaSectionHeaderView.identifier, for: indexPath) as! MediaSectionHeaderView
+                let section = dataSource[indexPath.section]
+                header.configure(with: section.model)
+                return header
+            }
+        )
+        
+        
+        
+        let input = SearchViewModel.Input(
+            searchText: searchView.searchBar.rx.text.orEmpty,
+            itemSelected: searchView.searchCollectionView.rx.itemSelected,
+            prefetchItems: searchView.searchCollectionView.rx.prefetchItems
+            
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        searchView.searchCollectionView.rx.prefetchItems
+            .bind(with: self) { owner, value in
+                
+            }
+            .disposed(by: disposeBag)
+        output.mediaResults
+            .drive(searchView.searchCollectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+        output.isSearching
+            .drive(onNext: { [weak self] isSearching in
+                self?.searchView.searchCollectionView.collectionViewLayout = isSearching ?
+                Resource.CollectionViewLayout.MediaLayout() :
+                Resource.CollectionViewLayout.createMediaPlayCellLayout()
+            })
+            .disposed(by: disposeBag)
+        
+        output.hasNoResults
+            .drive(onNext: { [weak self] hasNoResults in
+                self?.searchView.noResultsLabel.isHidden = !hasNoResults
+                self?.searchView.searchCollectionView.isHidden = hasNoResults
+            })
+            .disposed(by: disposeBag)
+        output.gotoDetail
+            .subscribe(with: self) { owner , mediaID in
+                //MARK: DetailView mediaID 값 넘겨서 연결
+//                owner.goToOtehrVCwithCompletionHandler(vc: DetailViewController(), mode: .present) { mediaID in
+//                    
+//                }
+            }
+            .disposed(by: disposeBag)
     }
     override func setViewController() {
         navigationController?.isNavigationBarHidden = true
+        hideKeyboardWhenTappedAround()
     }
     deinit {
         print("Deinit SearchViewController")

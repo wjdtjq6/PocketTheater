@@ -42,3 +42,16 @@ final class MediaCollectionViewCell: BaseCollectionViewCell {
     }
     
 }
+
+extension MediaCollectionViewCell {
+    func configure(with item: MediaItem) {
+        if let imageUrlString = item.imageUrl,
+           let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500\(imageUrlString)") {
+            DispatchQueue.main.async {
+                self.mediaImageView.kf.setImage(with: imageUrl)
+            }
+        } else {
+            mediaImageView.image = UIImage(named: "placeholder")
+        }
+    }
+}

@@ -10,7 +10,7 @@ import UIKit
 class MediaSectionHeaderView: UICollectionReusableView {
     
     private let titleLabel = UILabel().then {
-        $0.font = Resource.Font.bold16
+        $0.font = Resource.Font.bold18
         $0.textColor = Resource.Color.white
     }
     

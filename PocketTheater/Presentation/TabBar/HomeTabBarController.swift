@@ -40,8 +40,9 @@ final class HomeTabBarController: UITabBarController {
     
     private func setTabBarUI() {
         tabBar.backgroundColor = Resource.Color.darkGray
-//        tabBar.barTintColor = .red
+//        tabBar.barTintColor = Resource.Color.white
         tabBar.tintColor = Resource.Color.white
+        tabBar.unselectedItemTintColor = Resource.Color.white
     }
     
 }

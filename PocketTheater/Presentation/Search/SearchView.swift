@@ -20,11 +20,24 @@ class SearchView: BaseView {
     
     let searchCollectionView = UICollectionView(frame: .zero, collectionViewLayout: Resource.CollectionViewLayout.createMediaPlayCellLayout()).then {
         $0.register(MediaPlayCollectionViewCell.self, forCellWithReuseIdentifier: MediaPlayCollectionViewCell.identifier)
+        $0.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: MediaCollectionViewCell.identifier)
+        $0.register(NoResultsCell.self, forCellWithReuseIdentifier: NoResultsCell.identifier)
+        $0.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaSectionHeaderView.identifier)
         $0.backgroundColor = Resource.Color.black
     }
+    
+    let noResultsLabel = UILabel().then {
+        $0.text = "검색 결과가 없습니다."
+        $0.textAlignment = .center
+        $0.textColor = .white
+        $0.font = UIFont.systemFont(ofSize: 16)
+        $0.isHidden = true
+    }
+    
     override func setHierarchy() {
         addSubview(searchBar)
         addSubview(searchCollectionView)
+        addSubview(noResultsLabel)
     }
     
     override func setLayout() {
@@ -35,8 +48,9 @@ class SearchView: BaseView {
             make.top.equalTo(searchBar.snp.bottom)
             make.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
         }
+        noResultsLabel.snp.makeConstraints { make in
+            make.center.equalTo(searchCollectionView)
+            
+        }
     }
-   
-    
-    
 }
