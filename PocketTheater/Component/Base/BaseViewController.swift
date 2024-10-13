@@ -18,7 +18,11 @@ class BaseViewController: UIViewController {
     //MARK: ex) navigationTitle
     func setViewController() {
         navigationController?.navigationBar.barTintColor = Resource.Color.darkGray
+<<<<<<< HEAD
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+=======
+        tabBarController?.tabBar.barTintColor = Resource.Color.darkGray
+>>>>>>> de9f5b6 (Fix: navigationbar & tabbar 스크롤 시 색상 변경 문제 해결)
     }
     
 }

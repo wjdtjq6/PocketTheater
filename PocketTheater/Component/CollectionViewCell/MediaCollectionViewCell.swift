@@ -6,13 +6,14 @@
 //
 
 import UIKit
-import Kingfisher
+import RxSwift
 import SnapKit
 import Then
 
 final class MediaCollectionViewCell: BaseCollectionViewCell {
-    
-    private let mediaImageView = UIImageView().then {
+
+    let disposeBag = DisposeBag()
+    let mediaImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.backgroundColor = Resource.Color.darkGray
         $0.clipsToBounds = true
@@ -25,7 +26,7 @@ final class MediaCollectionViewCell: BaseCollectionViewCell {
     
     override func setLayout() {
         mediaImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(safeAreaLayoutGuide)
         }
     }
     
@@ -43,6 +44,7 @@ final class MediaCollectionViewCell: BaseCollectionViewCell {
     
 }
 
+<<<<<<< HEAD
 extension MediaCollectionViewCell {
     func configure(with item: Result) {
         if let imageUrlString = item.posterPath,
@@ -55,3 +57,5 @@ extension MediaCollectionViewCell {
         }
     }
 }
+=======
+>>>>>>> de9f5b6 (Fix: navigationbar & tabbar 스크롤 시 색상 변경 문제 해결)

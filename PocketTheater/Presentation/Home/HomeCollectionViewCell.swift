@@ -38,7 +38,7 @@ final class HomeCollectionViewCell: UICollectionViewCell {
     
     private func setUpLayout() {
         mediaImageView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
             make.height.equalTo(contentView.snp.width).multipliedBy(1.5)
         }
     }

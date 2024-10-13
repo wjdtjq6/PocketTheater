@@ -17,7 +17,7 @@ class HomeView: BaseView {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
         cv.backgroundColor = Resource.Color.black
         cv.register(FeaturedMediaCell.self, forCellWithReuseIdentifier: "FeaturedMediaCell")
-        cv.register(MediaItemCell.self, forCellWithReuseIdentifier: "MediaItemCell")
+        cv.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "MediaCollectionViewCell")
         cv.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MediaSectionHeaderView")
         return cv
     }()
@@ -28,7 +28,7 @@ class HomeView: BaseView {
     
     override func setLayout() {
         collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(safeAreaLayoutGuide)
         }
     }
     
@@ -103,59 +103,20 @@ class FeaturedMediaCell: UICollectionViewCell {
     var disposeBag = DisposeBag()
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
+        setViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupViews() {
+    private func setViews() {
         contentView.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(safeAreaLayoutGuide)
         }
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-    }
-}
-
-class MediaItemCell: UICollectionViewCell {
-    let imageView = UIImageView()
-    let titleLabel = UILabel()
-    var disposeBag = DisposeBag()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupViews() {
-        addSubview(imageView)
-        addSubview(titleLabel)
-        
-        imageView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(contentView.snp.width).multipliedBy(1.5)
-        }
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(5)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        titleLabel.textAlignment = .center
-        titleLabel.textColor = Resource.Color.white
-        titleLabel.font = UIFont.systemFont(ofSize: 12)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        disposeBag = DisposeBag() // 셀이 재사용될 때 disposeBag을 새로 생성
     }
 }
 
@@ -164,17 +125,17 @@ class MediaSectionHeaderView: UICollectionReusableView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
+        setViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupViews() {
+    private func setViews() {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
+            make.edges.equalTo(safeAreaLayoutGuide)
         }
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         titleLabel.textColor = Resource.Color.white

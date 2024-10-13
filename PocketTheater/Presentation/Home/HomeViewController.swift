@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-class HomeViewController: BaseViewController, UIScrollViewDelegate {
+class HomeViewController: BaseViewController {
     
     private let homeView = HomeView()
     private let disposeBag = DisposeBag()
@@ -36,10 +36,9 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
         }
         
         homeView.collectionView.register(FeaturedMediaCell.self, forCellWithReuseIdentifier: "FeaturedMediaCell")
-        homeView.collectionView.register(MediaItemCell.self, forCellWithReuseIdentifier: "MediaItemCell")
+        homeView.collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: "MediaCollectionViewCell")
         homeView.collectionView.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MediaSectionHeaderView")
         homeView.collectionView.collectionViewLayout = createLayout()
-
      }
     
      private func createLayout() -> UICollectionViewLayout {
@@ -47,14 +46,14 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
              guard let self = self else { return nil }
                 
              switch sectionIndex {
-                case 0: return self.createFeaturedSection()
-                case 1: return self.createCurrentMoviesSection()
-                default: return self.createHorizontalSection()
+                case 0: return createFeaturedSection()
+                case 1,2: return createHorizontalSection()
+                default: return createHorizontalSection()
                 }
             }
         }
     
-     private func createFeaturedSection() -> NSCollectionLayoutSection {
+       private func createFeaturedSection() -> NSCollectionLayoutSection {
            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
            let item = NSCollectionLayoutItem(layoutSize: itemSize)
            
@@ -66,26 +65,8 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
            
            return section
        }
-       
-       private func createCurrentMoviesSection() -> NSCollectionLayoutSection {
-           let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
-           let item = NSCollectionLayoutItem(layoutSize: itemSize)
-           item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-           
-           let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalWidth(0.75))
-           let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-           
-           let section = NSCollectionLayoutSection(group: group)
-           section.orthogonalScrollingBehavior = .continuous
-           
-           let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
-           let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-           section.boundarySupplementaryItems = [header]
-           
-           return section
-       }
-       
-       private func createHorizontalSection() -> NSCollectionLayoutSection {
+
+        private func createHorizontalSection() -> NSCollectionLayoutSection {
            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.3), heightDimension: .fractionalHeight(1.0))
            let item = NSCollectionLayoutItem(layoutSize: itemSize)
            item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
@@ -103,7 +84,7 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
            return section
        }
     
-     private func setupBindings() {
+        private func setupBindings() {
          
          guard let viewModel = viewModel else {
              print("ViewModel is not initialized")
@@ -114,22 +95,21 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
              configureCell: { dataSource, collectionView, indexPath, item in
                  switch indexPath.section {
                  case 0: // Featured section
-                                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedMediaCell", for: indexPath) as! FeaturedMediaCell
-                                 viewModel.loadImage(for: item)
-                                     .observe(on: MainScheduler.instance)
-                                     .map { UIImage(data: $0 as! Data) }
-                                     .bind(to: cell.imageView.rx.image)
-                                     .disposed(by: cell.disposeBag)
-                                 return cell
-                             case 1, 2: // Movies and TV Series sections
-                                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MediaItemCell", for: indexPath) as! MediaItemCell
-                                 viewModel.loadImage(for: item)
-                                     .observe(on: MainScheduler.instance)
-                                     .map { UIImage(data: $0 as! Data) }
-                                     .bind(to: cell.imageView.rx.image)
-                                     .disposed(by: cell.disposeBag)
-                                 //cell.titleLabel.text = item.title
-                                 return cell
+                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeaturedMediaCell", for: indexPath) as! FeaturedMediaCell
+                     viewModel.loadImage(for: item)
+                         .observe(on: MainScheduler.instance)
+                         .map { UIImage(data: $0 as! Data) }
+                         .bind(to: cell.imageView.rx.image)
+                         .disposed(by: cell.disposeBag)
+                     return cell
+                 case 1, 2: // Movies and TV Series sections
+                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MediaCollectionViewCell", for: indexPath) as! MediaCollectionViewCell
+                     viewModel.loadImage(for: item)
+                         .observe(on: MainScheduler.instance)
+                         .map { UIImage(data: $0 as! Data) }
+                         .bind(to: cell.mediaImageView.rx.image)
+                         .disposed(by: cell.disposeBag)
+                     return cell
                  default:
                      return UICollectionViewCell()
                  }
@@ -145,8 +125,6 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
              .bind(to: homeView.collectionView.rx.items(dataSource: dataSource))
              .disposed(by: disposeBag)
          
-         homeView.collectionView.rx.setDelegate(self)
-             .disposed(by: disposeBag)
      }
      
      deinit {
