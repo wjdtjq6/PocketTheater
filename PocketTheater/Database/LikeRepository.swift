@@ -7,22 +7,17 @@
 
 import Foundation
 import RealmSwift
+import RxSwift
 
 final class LikeRepository {
     
     private let realm = try! Realm()
-    
+   
     // 찜한 사진 전체 불러오기
     func getAllLikeMedia() -> Results<Like> {
         return realm.objects(Like.self)
     }
     
-    func getAllLikeMedia() -> [Like]? {
-        let likeMedia = realm.objects(Like.self)
-        return Array(likeMedia)
-    }
-    
-    // 찜한 사진 불러오기 (단일)
     func getLikeMedia(id: Int) -> Like? {
         return realm.object(ofType: Like.self, forPrimaryKey: id)
     }
@@ -60,7 +55,25 @@ final class LikeRepository {
     // 저장 경로 확인
     func getFileURL() {
         print(realm.configuration.fileURL ?? "No fileURL")
-        
     }
     
+    // 실시간 업데이트
+    func getAllLikeMediaObservable() -> Observable<[Like]> {
+        return Observable.create { observer in
+            let results = self.realm.objects(Like.self)
+            let token = results.observe { changes in
+                switch changes {
+                case .initial(let likes):
+                    observer.onNext(Array(likes))
+                case .update(let likes, _, _, _):
+                    observer.onNext(Array(likes))
+                case .error(let error):
+                    observer.onError(error)
+                }
+            }
+            return Disposables.create {
+                token.invalidate()
+            }
+        }
+    }
 }
