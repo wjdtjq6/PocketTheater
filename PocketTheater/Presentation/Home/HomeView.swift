@@ -13,7 +13,6 @@ import RxCocoa
 
 class HomeView: BaseView {
     
-<<<<<<< HEAD
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: createLayout()).then {
         $0.backgroundColor = Resource.Color.black
         $0.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.identifier)
@@ -29,24 +28,10 @@ class HomeView: BaseView {
     override func setHierarchy() {
         addSubview(collectionView)
         addSubview(activityIndicator)
-=======
-    lazy var collectionView: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: createLayout())
-        cv.backgroundColor = Resource.Color.black
-        cv.register(FeaturedMediaCell.self, forCellWithReuseIdentifier: "FeaturedMediaCell")
-        cv.register(MediaItemCell.self, forCellWithReuseIdentifier: "MediaItemCell")
-        cv.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "MediaSectionHeaderView")
-        return cv
-    }()
-    
-    override func setHierarchy() {
-        addSubview(collectionView)
->>>>>>> ddcc5a5eb0b761f4e0bc0b12cc508d4d47332407
     }
     
     override func setLayout() {
         collectionView.snp.makeConstraints { make in
-<<<<<<< HEAD
             make.edges.equalTo(safeAreaLayoutGuide)
         }
         
@@ -99,28 +84,8 @@ class HomeView: BaseView {
             section.boundarySupplementaryItems = [header]
             
             return section
-=======
-            make.edges.equalToSuperview()
->>>>>>> ddcc5a5eb0b761f4e0bc0b12cc508d4d47332407
         }
     }
-    
-    private func createLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
-            switch sectionIndex {
-            case 0:
-                // Featured section
-                return self.createFeaturedSection()
-            case 1:
-                // Current Movies section
-                return self.createCurrentMoviesSection()
-            default:
-                // Horizontal scrolling sections (TV Series, etc.)
-                return self.createHorizontalSection()
-            }
-        }
-    }
-    
     private func createFeaturedSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -229,28 +194,6 @@ class MediaItemCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag() // 셀이 재사용될 때 disposeBag을 새로 생성
-    }
-}
-
-class MediaSectionHeaderView: UICollectionReusableView {
-    let titleLabel = UILabel()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupViews() {
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
-        }
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        titleLabel.textColor = Resource.Color.white
     }
 }
 
