@@ -6,13 +6,14 @@
 //
 
 import UIKit
-import Kingfisher
+import RxSwift
 import SnapKit
 import Then
 
 final class MediaCollectionViewCell: BaseCollectionViewCell {
-    
-    private let mediaImageView = UIImageView().then {
+
+    let disposeBag = DisposeBag()
+    let mediaImageView = UIImageView().then {
         $0.contentMode = .scaleAspectFill
         $0.backgroundColor = Resource.Color.darkGray
         $0.clipsToBounds = true
@@ -25,7 +26,7 @@ final class MediaCollectionViewCell: BaseCollectionViewCell {
     
     override func setLayout() {
         mediaImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(safeAreaLayoutGuide)
         }
     }
     

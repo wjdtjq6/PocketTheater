@@ -11,7 +11,6 @@ import Then
 
 class LikeView: BaseView {
     
-    // let likeCollectionView = UICollectionView(frame: .zero, collectionViewLayout: Resource.CollectionViewLayout.createMediaPlayCellLayout()).then {
     let likeTableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.allowsSelection = true
@@ -21,7 +20,6 @@ class LikeView: BaseView {
         $0.translatesAutoresizingMaskIntoConstraints = false
         // 셀 등록
         $0.register(MediaPlayTableViewCell.self, forCellReuseIdentifier: MediaPlayTableViewCell.identifier)
-        // $0.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaSectionHeaderView.identifier)
     }
     
     override func setHierarchy() {

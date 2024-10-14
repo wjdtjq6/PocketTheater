@@ -35,22 +35,22 @@ final class ActionButton: UIButton {
             config.title = "재생"
             image = Resource.Image.play
             
-            config.baseBackgroundColor = UIColor.white
-            config.baseForegroundColor = UIColor.black
+            config.baseBackgroundColor = Resource.Color.white
+            config.baseForegroundColor = Resource.Color.black
             
         case .myList:
             config.title = "내가 찜한 리스트"
             image = Resource.Image.plus
             
-            config.baseBackgroundColor = UIColor.black
-            config.baseForegroundColor = UIColor.white
+            config.baseBackgroundColor = Resource.Color.black
+            config.baseForegroundColor = Resource.Color.white
             
         case .save:
             config.title = "저장"
             image = Resource.Image.download
             
-            config.baseBackgroundColor = UIColor.darkGray
-            config.baseForegroundColor = UIColor.white
+            config.baseBackgroundColor = Resource.Color.darkGray
+            config.baseForegroundColor = Resource.Color.white
         }
         
         config.imagePlacement = .leading

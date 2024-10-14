@@ -1,5 +1,5 @@
 //
-//  SearchMediaSectionHeaderView.swift
+//  SearchMediaSectionHeaderView1.swift
 //  PocketTheater
 //
 //  Created by 김윤우 on 10/12/24.

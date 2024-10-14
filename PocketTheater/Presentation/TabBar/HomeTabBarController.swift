@@ -39,6 +39,7 @@ final class HomeTabBarController: UITabBarController {
         tabBar.backgroundColor = Resource.Color.darkGray
         tabBar.barTintColor = Resource.Color.darkGray
         tabBar.tintColor = Resource.Color.white
+        tabBar.barTintColor = Resource.Color.darkGray
     }
     
 }

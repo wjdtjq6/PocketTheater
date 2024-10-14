@@ -27,7 +27,7 @@ final class SearchViewController: BaseViewController {
     
     private func bind() {
         
-        let dataSource = RxCollectionViewSectionedReloadDataSource<MediaSection>(
+        let dataSource = RxCollectionViewSectionedReloadDataSource<MediaSection1>(
             configureCell: { dataSource, collectionView, indexPath, item in
                 if dataSource[indexPath.section].model == "추천 시리즈 & 영화" {
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaPlayCollectionViewCell.identifier, for: indexPath) as! MediaPlayCollectionViewCell

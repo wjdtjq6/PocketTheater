@@ -19,6 +19,7 @@ class BaseViewController: UIViewController {
     func setViewController() {
         navigationController?.navigationBar.barTintColor = Resource.Color.darkGray
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        tabBarController?.tabBar.barTintColor = Resource.Color.darkGray
     }
     
 }
