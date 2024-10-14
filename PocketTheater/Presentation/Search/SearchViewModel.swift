@@ -14,7 +14,7 @@ final class SearchViewModel: ViewModelType {
     private let networkManager = NetworkManager.shared
     private let trendingMedia = BehaviorRelay<[Result]>(value: [])
     private let searchMedia = BehaviorRelay<[Result]>(value: [])
-    private let goToDetail = PublishSubject<Int>()
+    private let goToDetail = PublishSubject<Result>()
     private var currentPage = 1
     private var isFetching = false
     private var hasMorePages = true
@@ -26,8 +26,8 @@ final class SearchViewModel: ViewModelType {
     }
     
     struct Output {
-        let mediaResults: Driver<[MediaSection1]>
-        let gotoDetail: PublishSubject<Int>
+        let mediaResults: Driver<[MediaSection]>
+        let gotoDetail: PublishSubject<Result>
         let isSearching: Driver<Bool>
         let hasNoResults: Driver<Bool>
     }
@@ -101,9 +101,9 @@ final class SearchViewModel: ViewModelType {
         Task {
             do {
                 let media = try await networkManager.fetchTrending(mediaType: .movie)
-                print(media.results)
+                // print(media.results)
                 let items = media.results.map { $0 }
-                dump(items)
+                // dump(items)
                 DispatchQueue.main.async { [weak self] in
                     self?.trendingMedia.accept(items)
                 }
@@ -124,7 +124,7 @@ final class SearchViewModel: ViewModelType {
                 do {
                     let media = try await self.networkManager.searchMedia(mediaType: .movie, query: query,page: self.currentPage)
                     let items = media.results.map { $0 }
-                    dump(items,name: "1231231")
+                    // dump(items,name: "1231231")
                     observer.onNext(items)
                     observer.onCompleted()
                 } catch {
@@ -137,7 +137,7 @@ final class SearchViewModel: ViewModelType {
     }
     
     private func selectedMedia(_ item: Result) {
-        goToDetail.onNext(item.id)
+        goToDetail.onNext(item)
         print(item.id)
     }
     //MARK: 페이지네이션 수정중

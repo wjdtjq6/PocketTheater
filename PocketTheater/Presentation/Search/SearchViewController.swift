@@ -26,8 +26,7 @@ final class SearchViewController: BaseViewController {
     }
     
     private func bind() {
-        
-        let dataSource = RxCollectionViewSectionedReloadDataSource<MediaSection1>(
+        let dataSource = RxCollectionViewSectionedReloadDataSource<MediaSection>(
             configureCell: { dataSource, collectionView, indexPath, item in
                 if dataSource[indexPath.section].model == "추천 시리즈 & 영화" {
                     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaPlayCollectionViewCell.identifier, for: indexPath) as! MediaPlayCollectionViewCell
@@ -47,13 +46,10 @@ final class SearchViewController: BaseViewController {
             }
         )
         
-        
-        
         let input = SearchViewModel.Input(
             searchText: searchView.searchBar.rx.text.orEmpty,
             itemSelected: searchView.searchCollectionView.rx.itemSelected,
             prefetchItems: searchView.searchCollectionView.rx.prefetchItems
-            
         )
         
         let output = viewModel.transform(input: input)
@@ -63,6 +59,7 @@ final class SearchViewController: BaseViewController {
                 
             }
             .disposed(by: disposeBag)
+        
         output.mediaResults
             .drive(searchView.searchCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
@@ -81,19 +78,21 @@ final class SearchViewController: BaseViewController {
                 self?.searchView.searchCollectionView.isHidden = hasNoResults
             })
             .disposed(by: disposeBag)
+        
         output.gotoDetail
-            .subscribe(with: self) { owner , mediaID in
-                //MARK: DetailView mediaID 값 넘겨서 연결
-               owner.goToOtehrVCwithCompletionHandler(vc: DetailViewController(), mode: .present) { mediaID in
-                   
-               }
+            .bind(with: self) { owner, selectedMedia in
+                let vc = DetailViewController()
+                vc.media = selectedMedia
+                owner.goToOtehrVC(vc: vc, mode: .present)
             }
             .disposed(by: disposeBag)
     }
+    
     override func setViewController() {
         navigationController?.isNavigationBarHidden = true
         hideKeyboardWhenTappedAround()
     }
+    
     deinit {
         print("Deinit SearchViewController")
     }

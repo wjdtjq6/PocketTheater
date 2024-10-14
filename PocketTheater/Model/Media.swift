@@ -24,6 +24,7 @@ struct Result: Decodable {
     let id: Int
     let name: String?
     let title: String?
+    let mediaType: String
     let overview: String
     let posterPath: String?
     let adult: Bool
@@ -40,5 +41,6 @@ struct Result: Decodable {
         case firstAirDate = "first_air_date"
         case releaseDate = "release_date"
         case voteAverage = "vote_average"
+        case mediaType = "media_type"
     }
 }

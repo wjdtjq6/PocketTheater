@@ -1,24 +1,16 @@
 //
-//  DetailHeaderView.swift
+//  DetailHeaderCell.swift
 //  PocketTheater
 //
-//  Created by junehee on 10/11/24.
+//  Created by junehee on 10/14/24.
 //
 
 import UIKit
 import SnapKit
 import Then
-import RxCocoa
-import RxSwift
 
-/**
- 
- */
-final class DetailHeaderView: UICollectionReusableView {
+final class DetailHeaderCell: BaseCollectionViewCell {
     
-    static let identifier = "DetailHeaderView"
-    static let elementKind = UICollectionView.elementKindSectionHeader
-
     // 미디어 제목
     private let titleLabel = UILabel().then {
         $0.font = Resource.Font.bold17
@@ -64,7 +56,7 @@ final class DetailHeaderView: UICollectionReusableView {
         $0.font = Resource.Font.regular12
         $0.textColor = Resource.Color.white
         // 임시 텍스트 확인용
-        $0.text = "출연: 켈시 맨, 피트 닥터"
+        $0.text = "제작: 켈시 맨, 피트 닥터"
     }
     
     // 비슷한 콘텐츠
@@ -84,11 +76,11 @@ final class DetailHeaderView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setHierarchy() {
+    override func setHierarchy() {
         [titleLabel, voteAverageLabel, playButton, saveButton, overviewLabel, castLabel, creatorLabel, similarContentLabel].forEach { self.addSubview($0) }
     }
     
-    private func setLayout() {
+    override func setLayout() {
         let safeArea = self.safeAreaLayoutGuide
         
         titleLabel.snp.makeConstraints { make in
@@ -138,13 +130,15 @@ final class DetailHeaderView: UICollectionReusableView {
             make.height.equalTo(20)
         }
     }
-    
-    func updateHeaderView(with media: Result) {
-    // func updateHeaderView(with media: Header) {
-        titleLabel.text = media.title
-        // voteAverageLabel.text = "\(media.voteAverage)"
-        // overviewLabel.text = media.overview
-        // castLabel.text = "출연: \(media.cast.joined(separator: ", "))"
+    func updateCell(with media: MediaDetail) {
+        print("✨✨", media)
+        let castStr = media.cast.joined(separator: ", ")
+        
+        titleLabel.text = media.movie.title
+        voteAverageLabel.text = "\(media.movie.voteAverage)"
+        overviewLabel.text = media.movie.overview
+        castLabel.text = "출연: \(castStr)"
+        
         // creatorLabel.text = "제작: \(media.creators.joined(separator: ", "))"
     }
     

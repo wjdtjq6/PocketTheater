@@ -19,14 +19,12 @@ class DetailView: BaseView {
     }
     
     // 비슷한 콘텐츠 컬렉션뷰
-    lazy var similarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: Resource.CollectionViewLayout.detailViewLayout()).then {
+    lazy var similarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout()).then {
         $0.backgroundColor = Resource.Color.black
         
         // 헤더 & 셀 등록
+        $0.register(DetailHeaderCell.self, forCellWithReuseIdentifier: DetailHeaderCell.identifier)
         $0.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: MediaCollectionViewCell.identifier)
-        $0.register(DetailHeaderView.self,
-                    forSupplementaryViewOfKind: DetailHeaderView.elementKind,
-                    withReuseIdentifier: DetailHeaderView.identifier)
     }
     
     override func setHierarchy() {
@@ -49,5 +47,16 @@ class DetailView: BaseView {
         }
     }
     
+    func updateDetailMainImage(_ path: String?) {
+        print("🍀🍀")
+        guard let path = path else { return }
+        if let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500\(path)") {
+            DispatchQueue.main.async {
+                self.imageView.kf.setImage(with: imageUrl)
+            }
+        } else {
+            imageView.image = UIImage(named: "placeholder")
+        }
+    }
 }
 
