@@ -59,14 +59,14 @@ final class LikeViewController: BaseViewController {
         
         likeView.likeTableView.rx.modelSelected(Like.self)
             .subscribe(onNext: { [weak self] like in
-                self?.handleSelectedItem(like)
+                self?.navigateToDetail(with: like)
             })
             .disposed(by: disposeBag)
     }
     
-    private func handleSelectedItem(_ like: Like) {
-        print("Selected item: \(like.title)")
-        // 여기에 선택된 항목에 대한 추가 처리를 구현하세요.
+    private func navigateToDetail(with like: Like) {
+        let vc = DetailViewController()
+        goToOtehrVC(vc: vc, mode: .present)
     }
 }
 
@@ -74,12 +74,16 @@ extension LikeViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
         header.textLabel?.textColor = Resource.Color.white
-        header.textLabel?.font = Resource.Font.bold18
+        header.textLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
         
         if #available(iOS 14.0, *) {
             header.backgroundConfiguration?.backgroundColor = Resource.Color.black
         } else {
             header.contentView.backgroundColor = Resource.Color.black
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
 }
