@@ -6,9 +6,21 @@
 //
 
 import Foundation
-import RxCocoa
 import RxSwift
-import UIKit // 임시
+import RxCocoa
+import Differentiator
+
+struct LikeDataSection {
+    var header: String
+    var items: [Like]
+}
+
+extension LikeDataSection: SectionModelType {
+    init(original: LikeDataSection, items: [Like]) {
+        self = original
+        self.items = items
+    }
+}
 
 final class LikeViewModel: ViewModelType {
     
@@ -17,7 +29,7 @@ final class LikeViewModel: ViewModelType {
     
     struct Input {
         let viewDidLoadTrigger: PublishSubject<Void>
-        let itemDeleted: ControlEvent<TestData>
+        let itemDeleted: Observable<Like>
     }
     
     struct Output {
@@ -27,34 +39,33 @@ final class LikeViewModel: ViewModelType {
     func transform(input: Input) -> Output {
         let likeList = PublishSubject<[LikeDataSection]>()
         
-        // 내가 찜한 리스트 데이터 바인딩
-        input.viewDidLoadTrigger
-            .map { _ in
-                print("안녕")
-                return [LikeDataSection(header: "영화 시리즈", items: [
-                   TestData(title: "1번", image: UIImage()),
-                   TestData(title: "2번", image: UIImage()),
-                   TestData(title: "3번", image: UIImage()),
-                   TestData(title: "4번", image: UIImage()),
-               ])]
+        let initialLoad = input.viewDidLoadTrigger
+            .flatMap { [weak self] _ -> Observable<[LikeDataSection]> in
+                guard let self = self else { return Observable.just([]) }
+                return self.getLikeSections()
             }
-            .bind { data in
-                likeList.onNext(data)
-            }
-            .disposed(by: disposeBag)
         
-        // 내가 찜한 리스트 밀어서 삭제
-        input.itemDeleted
-            .observe(on: MainScheduler.asyncInstance)
-            .withUnretained(self)
-            .bind { model, indexPath in
-                // Realm 삭제 후 likeList 새로운 데이터 바인딩
-                print("삭제 >>>", model, indexPath)
+        let deletions = input.itemDeleted
+            .observe(on: MainScheduler.instance)
+            .do(onNext: { [weak self] like in
+                self?.repository.deleteLikeMedia(media: like)
+            })
+            .flatMap { [weak self] _ -> Observable<[LikeDataSection]> in
+                guard let self = self else { return Observable.just([]) }
+                return self.getLikeSections()
             }
-            .disposed(by: disposeBag)
         
+        Observable.merge(initialLoad, deletions)
+            .bind(to: likeList)
+            .disposed(by: disposeBag)
         
         return Output(likeList: likeList)
     }
     
+    private func getLikeSections() -> Observable<[LikeDataSection]> {
+        return repository.getAllLikeMediaObservable()
+            .map { likes in
+                [LikeDataSection(header: "영화 시리즈", items: likes)]
+            }
+    }
 }
