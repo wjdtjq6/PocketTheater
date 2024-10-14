@@ -10,13 +10,18 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 
-class HomeViewController: BaseViewController, UIScrollViewDelegate {
+final class HomeViewController: BaseViewController, UIScrollViewDelegate {
     
     private let homeView = HomeView()
     private let disposeBag = DisposeBag()
     private var viewModel: HomeViewModel!
     private let loadTrigger = PublishSubject<Void>()
+    private let likeRepository = LikeRepository()
     
+    private var overlayView: UIView?
+    private var alertView: CustomAlertView?
+    private var isAlertShowing = false
+
     private let netflixLogoImageView = UIImageView().then {
         $0.image = UIImage(named: "Netflix_Symbol_RGB")
         $0.contentMode = .scaleAspectFit
@@ -42,7 +47,7 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
         viewModel = HomeViewModel()
         setupNavigationBar()
         setupBindings()
-        
+        likeRepository.getFileURL()
         // 셀 등록
         homeView.collectionView.register(FeaturedCollectionViewCell.self, forCellWithReuseIdentifier: FeaturedCollectionViewCell.identifier)
         homeView.collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.identifier)
@@ -51,28 +56,8 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
         loadTrigger.onNext(())
     }
     
-    private func setupNavigationBar() {
-        let logoContainer = UIView()
-        logoContainer.addSubview(netflixLogoImageView)
-        netflixLogoImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(-30)
-            make.centerY.equalToSuperview()
-            make.width.equalTo(50) // 로고 너비 조정
-            make.height.equalTo(50)
-        }
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoContainer)
-        
-        let chromecastBarButton = UIBarButtonItem(customView: chromecastButton)
-        let searchBarButton = UIBarButtonItem(customView: searchButton)
-        navigationItem.rightBarButtonItems = [searchBarButton, chromecastBarButton]
-    }
-    
-    private func setupBindings() {
-        let input = HomeViewModel.Input(loadTrigger: loadTrigger)
-        
-        let output = viewModel.transform(input: input)
-        
-        let dataSource = RxCollectionViewSectionedReloadDataSource<HomeMediaSection>(
+    private func createDataSource() -> RxCollectionViewSectionedReloadDataSource<HomeMediaSection> {
+        return RxCollectionViewSectionedReloadDataSource<HomeMediaSection>(
             configureCell: { [weak self] dataSource, collectionView, indexPath, item in
                 if indexPath.section == 0 {
                     // 특집 섹션용 셀
@@ -128,28 +113,67 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
                 return header
             }
         )
+    }
+    
+    private func setupNavigationBar() {
+        let logoContainer = UIView()
+        logoContainer.addSubview(netflixLogoImageView)
+        netflixLogoImageView.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(-30)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(50) // 로고 너비 조정
+            make.height.equalTo(50)
+        }
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoContainer)
+        
+        let chromecastBarButton = UIBarButtonItem(customView: chromecastButton)
+        let searchBarButton = UIBarButtonItem(customView: searchButton)
+        navigationItem.rightBarButtonItems = [searchBarButton, chromecastBarButton]
+    }
+    
+    private func setupBindings() {
+        let input = HomeViewModel.Input(loadTrigger: loadTrigger)
+        
+        let output = viewModel.transform(input: input)
         
         output.sections
-            .drive(homeView.collectionView.rx.items(dataSource: dataSource))
+            .drive(homeView.collectionView.rx.items(dataSource: createDataSource()))
             .disposed(by: disposeBag)
         
         output.isLoading
-            .drive(onNext: { [weak self] isLoading in
-                if isLoading {
-                    self?.homeView.activityIndicator.startAnimating()
-                } else {
-                    self?.homeView.activityIndicator.stopAnimating()
-                }
-            })
+            .drive(homeView.activityIndicator.rx.isAnimating)
             .disposed(by: disposeBag)
         
         output.error
             .drive(onNext: { [weak self] errorMessage in
-                if !errorMessage.isEmpty {
-                    self?.showErrorAlert(message: errorMessage)
+                self?.showErrorAlert(message: errorMessage)
+            })
+            .disposed(by: disposeBag)
+        
+        // 컬렉션 뷰 아이템 선택 처리
+        homeView.collectionView.rx.modelSelected(Result.self)
+            .subscribe(onNext: { [weak self] item in
+                guard let self = self, !self.isAlertShowing else { return }
+                if !self.isFeaturedSection(for: item) {
+                    self.navigateToDetailViewController(with: item)
                 }
             })
             .disposed(by: disposeBag)
+        
+        // 'My List' 버튼 탭 처리 (FeaturedCollectionViewCell에 있는 경우)
+        // 이 부분은 FeaturedCollectionViewCell에 myListButton이 있다고 가정합니다.
+        homeView.collectionView.rx.modelSelected(Result.self)
+            .filter { [weak self] item in self?.isFeaturedSection(for: item) == true }
+            .subscribe(onNext: { [weak self] item in
+                self?.addToMyList(item)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func isFeaturedSection(for item: Result) -> Bool {
+        // Featured 섹션인지 확인하는 로직
+        // 예: item의 특정 속성을 확인하거나, 섹션 인덱스를 확인
+        return false // 임시로 false 반환
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -225,12 +249,75 @@ class HomeViewController: BaseViewController, UIScrollViewDelegate {
     }
 
     private func addToMyList(_ item: Result) {
-        // 여기에 '내가 찜한 리스트'에 추가하는 로직을 구현하세요
-        print("Added to my list: \(item)")
+        Task {
+            do {
+                if let _ = likeRepository.getLikeMedia(id: item.id) {
+                    await MainActor.run {
+                        showAlert(message: "이미 저장된 미디어에요 :)")
+                    }
+                    return
+                }
+                
+                guard let posterPath = item.posterPath else {
+                    throw NSError(domain: "PosterPathError", code: 0, userInfo: [NSLocalizedDescriptionKey: "포스터 경로가 없습니다."])
+                }
+                
+                let imageData = try await NetworkManager.shared.fetchImage(imagePath: posterPath)
+                
+                let fileName = "\(item.id).jpg"
+                let fileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(fileName)
+                try imageData.write(to: fileURL)
+                
+                let newLike = Like(media: item, imagePath: fileURL.path)
+                try likeRepository.addLikeMedia(newLike)
+                
+                await MainActor.run {
+                    showAlert(message: "미디어를 저장했어요 :)")
+                }
+            } catch {
+                await MainActor.run {
+                    showAlert(message: "미디어 저장에 실패했어요 :(")
+                }
+            }
+        }
     }
-
+    
+    private func showAlert(message: String) {
+        guard !isAlertShowing else { return }
+        
+        overlayView = UIView(frame: view.bounds)
+        overlayView?.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        view.addSubview(overlayView!)
+        
+        alertView = CustomAlertView(message: message)
+        alertView?.onConfirm = { [weak self] in
+            self?.hideAlert()
+        }
+        view.addSubview(alertView!)
+        
+        alertView?.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.width.equalTo(350)
+            make.height.equalTo(120)
+        }
+        
+        isAlertShowing = true
+    }
+    
+    private func hideAlert() {
+        overlayView?.removeFromSuperview()
+        alertView?.removeFromSuperview()
+        overlayView = nil
+        alertView = nil
+        isAlertShowing = false
+    }
+    
+    private func navigateToDetailViewController(with item: Result) {
+        let vc = DetailViewController()
+        goToOtehrVC(vc: vc, mode: .present)
+    }
+    
     deinit {
         print("Deinit HomeViewController")
     }
-    
 }
