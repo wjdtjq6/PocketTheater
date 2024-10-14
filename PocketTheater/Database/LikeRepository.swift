@@ -23,8 +23,21 @@ final class LikeRepository {
     }
     
     // 찜한 사진 불러오기 (단일)
-    func getLikeMedia(id: String) -> Like? {
+    func getLikeMedia(id: Int) -> Like? {
         return realm.object(ofType: Like.self, forPrimaryKey: id)
+    }
+    
+    // 찜한 미디어 추가하기
+    func addLikeMedia(_ media: Like) throws {
+        do {
+            try realm.write {
+                realm.add(media)
+                print("Succeed Add LikeMedia")
+            }
+        } catch {
+            print("Failed Add LikeMedia", error)
+            throw error
+        }
     }
     
     // 찜한 사진 삭제하기
@@ -40,12 +53,12 @@ final class LikeRepository {
     }
     
     // 스키마버전 확인
-    private func getSchemaVersion() {
+    func getSchemaVersion() {
         print(realm.configuration.schemaVersion)
     }
 
     // 저장 경로 확인
-    private func getFileURL() {
+    func getFileURL() {
         print(realm.configuration.fileURL ?? "No fileURL")
         
     }

@@ -36,8 +36,6 @@ extension UIViewController {
         let vc = vc
         switch mode {
         case .present:
-            vc.modalPresentationStyle = .overFullScreen
-            vc.modalTransitionStyle = .flipHorizontal
             present(vc, animated: true)
         case .push:
             vc.hidesBottomBarWhenPushed = tabbarHidden ?? false
