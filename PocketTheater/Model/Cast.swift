@@ -10,6 +10,7 @@ import Foundation
 struct Cast: Decodable {
     let id: Int
     let cast: [Casts]
+    let crew: [Crews]
 }
 
 struct Casts: Decodable {
@@ -26,4 +27,8 @@ struct Casts: Decodable {
         case castID = "cast_id"
         case creditID = "credit_id"
     }
+}
+
+struct Crews: Decodable {
+    let name: String
 }

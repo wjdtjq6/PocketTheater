@@ -83,12 +83,12 @@ enum Resource {
                 let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
                 
-                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(270))
-                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: DetailHeaderView.elementKind, alignment: .top)
+                // let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                // let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: DetailHeaderView.elementKind, alignment: .top)
                 
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
-                section.boundarySupplementaryItems = [header]
+                // section.boundarySupplementaryItems = [header]
                 return section
             }
             

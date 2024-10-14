@@ -30,22 +30,11 @@ final class MediaCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    func updateCell(_ data: Result) async throws {
-        guard let path = data.backdropPath else { return }
-        let image = try await NetworkManager.shared.fetchImage(imagePath: path)
-        if Task.isCancelled { return }
-        mediaImageView.image = UIImage(data: image)
-    }
-
-    /// `추후 네트워크 연결 후 삭제할 메서드 입니다.`
-    func updateCellTest(_ data: UIImage) async throws {
-        mediaImageView.image = data
-    }
-    
 }
 
 extension MediaCollectionViewCell {
     func configure(with item: Result) {
+        print("🍀🍀")
         if let imageUrlString = item.posterPath,
            let imageUrl = URL(string: "https://image.tmdb.org/t/p/w500\(imageUrlString)") {
             DispatchQueue.main.async {
