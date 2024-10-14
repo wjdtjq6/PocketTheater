@@ -320,5 +320,4 @@ final class HomeViewController: BaseViewController, UIScrollViewDelegate {
     deinit {
         print("Deinit HomeViewController")
     }
-    
 }
