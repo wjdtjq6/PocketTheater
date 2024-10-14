@@ -8,3 +8,4 @@
 import RxDataSources
 
 typealias MediaSection = SectionModel<String, Result>
+

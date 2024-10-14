@@ -15,10 +15,8 @@ import RxSwift
  
  */
 final class DetailHeaderView: UICollectionReusableView {
-    
-    static let identifier = "DetailHeaderView"
     static let elementKind = UICollectionView.elementKindSectionHeader
-
+    
     // 미디어 제목
     private let titleLabel = UILabel().then {
         $0.font = Resource.Font.bold17
@@ -36,7 +34,7 @@ final class DetailHeaderView: UICollectionReusableView {
     }
     
     // 재생 버튼 (폰트 사이즈 수정하기)
-    private let playButton = ActionButton(mode: .play, fontSize: 13)
+    let playButton = ActionButton(mode: .play, fontSize: 13)
     
     // 저장 버튼 (폰트 사이즈 수정하기)
     private let saveButton = ActionButton(mode: .save, fontSize: 13)
@@ -96,42 +94,42 @@ final class DetailHeaderView: UICollectionReusableView {
             make.horizontalEdges.equalTo(safeArea).inset(16)
             make.height.equalTo(20)
         }
-    
+        
         voteAverageLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom)
             make.horizontalEdges.equalTo(safeArea).inset(16)
             make.height.equalTo(20)
         }
-    
+        
         playButton.snp.makeConstraints { make in
             make.top.equalTo(voteAverageLabel.snp.bottom).offset(16)
             make.horizontalEdges.equalTo(safeArea).inset(16)
             make.height.equalTo(30)
         }
-    
+        
         saveButton.snp.makeConstraints { make in
             make.top.equalTo(playButton.snp.bottom).offset(10)
             make.horizontalEdges.equalTo(safeArea).inset(16)
             make.height.equalTo(30)
         }
-    
+        
         overviewLabel.snp.makeConstraints { make in
             make.top.equalTo(saveButton.snp.bottom).offset(10)
             make.horizontalEdges.equalTo(safeArea).inset(16)
         }
-    
+        
         castLabel.snp.makeConstraints { make in
             make.top.equalTo(overviewLabel.snp.bottom).offset(16)
             make.horizontalEdges.equalTo(safeArea).inset(16)
             make.height.equalTo(16)
         }
-    
+        
         creatorLabel.snp.makeConstraints { make in
             make.top.equalTo(castLabel.snp.bottom)
             make.horizontalEdges.equalTo(safeArea).inset(16)
             make.height.equalTo(16)
         }
-    
+        
         similarContentLabel.snp.makeConstraints { make in
             make.top.equalTo(creatorLabel.snp.bottom).offset(16)
             make.horizontalEdges.equalTo(safeArea).inset(16)
@@ -139,13 +137,11 @@ final class DetailHeaderView: UICollectionReusableView {
         }
     }
     
-    func updateHeaderView(with media: Result) {
-    // func updateHeaderView(with media: Header) {
-        titleLabel.text = media.title
-        // voteAverageLabel.text = "\(media.voteAverage)"
-        // overviewLabel.text = media.overview
-        // castLabel.text = "출연: \(media.cast.joined(separator: ", "))"
-        // creatorLabel.text = "제작: \(media.creators.joined(separator: ", "))"
-    }
     
+    func updateHeaderView(_ data: Result) {
+        // 헤더의 UI 요소를 Result 데이터로 업데이트
+        titleLabel.text = data.title  // Result의 title을 UILabel에 할당
+        voteAverageLabel.text = "\(data.voteAverage)"  // Result의 평점을 UILabel에 할당
+        overviewLabel.text = data.overview  // Result의 설명을 UILabel에 할당
+    }
 }

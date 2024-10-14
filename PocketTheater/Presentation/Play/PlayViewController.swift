@@ -5,7 +5,7 @@
 //  Created by junehee on 10/12/24.
 //
 
-import Foundation
+import UIKit
 
 final class PlayViewController: BaseViewController {
     

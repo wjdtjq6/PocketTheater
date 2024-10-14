@@ -22,7 +22,7 @@ final class SearchViewModel: ViewModelType {
     struct Input {
         let searchText: ControlProperty<String>
         let itemSelected: ControlEvent<IndexPath>
-        let prefetchItems: ControlEvent<[IndexPath]>
+        let prefetchTrigger: Observable<Void>
     }
     
     struct Output {
@@ -30,6 +30,7 @@ final class SearchViewModel: ViewModelType {
         let gotoDetail: PublishSubject<Result>
         let isSearching: Driver<Bool>
         let hasNoResults: Driver<Bool>
+        let isLoading: Driver<Bool>
     }
     
     init() {
@@ -38,39 +39,67 @@ final class SearchViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         let isSearching = input.searchText.map { !$0.isEmpty }
+        let isLoading = BehaviorRelay<Bool>(value: false)
         let searchResults = input.searchText
-            .debounce(.seconds(1), scheduler: MainScheduler.instance)
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
+            .do(onNext: { [weak self] query in
+                guard let self else { return }
+                self.currentQuery = query
+                self.currentPage = 1
+                self.hasMorePages = true
+                self.isFetching = false
+            })
             .flatMapLatest { [weak self] query -> Observable<[Result]> in
                 guard let self = self, !query.isEmpty else {
                     return .just([])
                 }
+                isLoading.accept(true)
                 return self.searchMedia(query: query)
+                    .do(onNext: { _ in isLoading.accept(false) })
             }
             .share()
         
         searchResults
-            .do(onNext: { [weak self] _ in
-                self?.currentPage = 1  // 새 검색어 입력 시 페이지 초기화
-                self?.hasMorePages = true  // 더 가져올 페이지가 있는지 여부도 초기화
-                self?.isFetching = false   // 새로운 검색 시작 시, 상태 초기화
-            })
             .bind(to: self.searchMedia)
             .disposed(by: disposeBag)
-       
+        
         let noResult = Observable.combineLatest(isSearching, searchMedia) { isSearching, search in
             isSearching && search.isEmpty
         }.asDriver(onErrorJustReturn: false)
         
         let mediaResults = Observable.combineLatest(trendingMedia, searchMedia, isSearching) { trending, search, isSearching in
             if !isSearching {
-                return [MediaSection1(model: "추천 시리즈 & 영화", items: trending)]
+                return [MediaSection(model: "추천 시리즈 & 영화", items: trending)]
             } else if search.isEmpty {
                 return []
             } else {
-                return [MediaSection1(model: "영화 & 시리즈", items: search)]
+                return [MediaSection(model: "영화 & 시리즈", items: search)]
             }
         }
+        let loadMoreResults = input.prefetchTrigger
+            .filter { [weak self] in
+                guard let self = self else { return false }
+                return !self.isFetching && self.hasMorePages && !self.currentQuery.isEmpty
+            }
+            .flatMapLatest { [weak self] _ -> Observable<[Result]> in
+                guard let self = self else { return .empty() }
+                self.isFetching = true
+                isLoading.accept(true)
+                return self.searchMedia(query: self.currentQuery)
+                    .do(onNext: { _ in
+                        self.isFetching = false
+                        isLoading.accept(false)
+                    })
+            }
+            .share()
+        
+        loadMoreResults
+            .withLatestFrom(searchMedia) { newResults, currentResults in
+                return currentResults + newResults
+            }
+            .bind(to: searchMedia)
+            .disposed(by: disposeBag)
         
         input.itemSelected
             .withLatestFrom(mediaResults) { indexPath, sections in
@@ -81,19 +110,11 @@ final class SearchViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-//        input.prefetchItems
-//            .map { $0.map { $0.item } }
-//            .debug("adasdasdas")// IndexPath를 Int로 변환
-//            .subscribe(onNext: { [weak self] indexes in
-//                self?.prefetchIfNeeded(indexes: indexes)
-//            })
-//            .disposed(by: disposeBag)
-        
         return Output(
             mediaResults: mediaResults.asDriver(onErrorJustReturn: []),
             gotoDetail: goToDetail,
             isSearching: isSearching.asDriver(onErrorJustReturn: false),
-            hasNoResults: noResult
+            hasNoResults: noResult, isLoading: isLoading.asDriver()
         )
     }
     
@@ -114,79 +135,30 @@ final class SearchViewModel: ViewModelType {
     }
     
     private func searchMedia(query: String) -> Observable<[Result]> {
-        return Observable.create { [weak self] observer in
-            guard let self = self else {
-                observer.onCompleted()
+            return Observable.create { [weak self] observer in
+                guard let self = self else {
+                    observer.onCompleted()
+                    return Disposables.create()
+                }
+                
+                Task {
+                    do {
+                        let media = try await self.networkManager.searchMedia(mediaType: .movie, query: query, page: self.currentPage)
+                        let items = media.results.map { $0 }
+                        self.hasMorePages = media.page < media.totalPages
+                        self.currentPage += 1
+                        observer.onNext(items)
+                        observer.onCompleted()
+                    } catch {
+                        observer.onError(error)
+                    }
+                }
+                
                 return Disposables.create()
             }
-            
-            Task {
-                do {
-                    let media = try await self.networkManager.searchMedia(mediaType: .movie, query: query,page: self.currentPage)
-                    let items = media.results.map { $0 }
-                    // dump(items,name: "1231231")
-                    observer.onNext(items)
-                    observer.onCompleted()
-                } catch {
-                    observer.onError(error)
-                }
-            }
-            
-            return Disposables.create()
         }
-    }
-    
-    private func selectedMedia(_ item: Result) {
-        goToDetail.onNext(item)
-        print(item.id)
-    }
-    //MARK: 페이지네이션 수정중
-//    private func prefetchIfNeeded(indexes: [Int]) {
-//        guard let maxIndex = indexes.max() else { return }
-//        
-//        let totalItemCount = searchMedia.value.count
-//        let thresholdIndex = max(0, totalItemCount - 5)
-//        
-//        print("Prefetch triggered - Max Index: \(maxIndex), Threshold: \(thresholdIndex), Total Items: \(totalItemCount)")
-//        print("Current conditions - isFetching: \(isFetching), hasMorePages: \(hasMorePages)")
-//        
-//        if maxIndex >= thresholdIndex && !isFetching && hasMorePages {
-//            print("Conditions met, calling fetchNextPage()")
-//            fetchNextPage()
-//        } else {
-//            print("Conditions not met, skipping fetchNextPage()")
-//        }
-//    }
-//    
-//    private func fetchNextPage() {
-//        print("fetchNextPage called - Current Page: \(currentPage)")
-//        guard !isFetching && hasMorePages else {
-//            print("Fetch skipped - isFetching: \(isFetching), hasMorePages: \(hasMorePages)")
-//            return
-//        }
-//        
-//        isFetching = true
-//        print("Fetching page \(currentPage + 1)")
-//        
-//        Task {
-//            do {
-//                let media = try await networkManager.searchMedia(mediaType: .movie, query: currentQuery, page: currentPage + 1)
-//                let newItems = media.results.map { MediaItem(title: $0.title ?? $0.name ?? "", imageUrl: $0.posterPath, id: $0.id) }
-//                
-//                DispatchQueue.main.async { [weak self] in
-//                    guard let self = self else { return }
-//                    var currentItems = self.searchMedia.value
-//                    currentItems.append(contentsOf: newItems)
-//                    self.searchMedia.accept(currentItems)
-//                    
-//                    self.hasMorePages = media.page < media.totalPages
-//                    self.currentPage += 1
-//                    self.isFetching = false
-//                }
-//            } catch {
-//                print("Error fetching next page: \(error)")
-//                self.isFetching = false
-//            }
-//        }
-//    }
+        
+        private func selectedMedia(_ item: Result) {
+            goToDetail.onNext(item)
+        }
 }

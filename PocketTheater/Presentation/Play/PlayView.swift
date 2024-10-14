@@ -21,5 +21,4 @@ final class PlayView: BaseView {
             $0.edges.equalTo(self.safeAreaLayoutGuide)
         }
     }
-    
 }
