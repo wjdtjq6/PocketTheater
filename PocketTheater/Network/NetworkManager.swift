@@ -101,4 +101,8 @@ final class NetworkManager {
         let url = try makeURL(path: imagePath, queryItems: [], isImageURL: true)
         return try await fetchDataRequest(url: url)
     }
+    
+    func fetchTrailerURL() {
+        
+    }
 }
