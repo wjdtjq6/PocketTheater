@@ -35,21 +35,94 @@ enum Resource {
     }
 
     enum Image {
-        static let play = UIImage(systemName:  "play")
+        static let play = UIImage(systemName:  "play.fill")
         static let search = UIImage(systemName:  "magnifyingglass")
         static let tv = UIImage(systemName:  "sparkles.tv")
-        static let house = UIImage(systemName:  "house")
+        static let house = UIImage(systemName:  "house.fill")
         static let playCircle = UIImage(systemName:  "play.circle")
         static let download = UIImage(systemName:  "square.and.arrow.down")
-        static let smileFace = UIImage(systemName:  "face.smiling")
+        static let smileFace = UIImage(systemName:  "face.smiling.inverse")
         static let plus = UIImage(systemName:  "plus")
     }
 
     enum Color {
         static let white = UIColor(hex: "FFFFFF") // 흰색
         static let black = UIColor(hex: "000000") // 검은색
-        static let darkGray = UIColor(hex: "1B1B1E") // 다크 그레이
-        static let lightGray = UIColor(hex: "FC2125") // 레드
+        static let eerieBlack = UIColor(hex: "1B1B1E") // 이리 블랙
+        static let darkGray = UIColor(hex: "373737") // 다크 그레이
+        static let red = UIColor(hex: "FC2125") // 레드
     }
+    
+    // MARK: 검색화면 영화 & 시리즈, 디테일 화면 비슷한 콘텐츠 레이아웃
+    enum CollectionViewLayout {
+        static func MediaLayout() -> UICollectionViewCompositionalLayout {
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                 heightDimension: .fractionalHeight(1.0))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 4, trailing: 4)
 
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                  heightDimension: .fractionalWidth(0.5))
+
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
+
+            let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+
+            let layout = UICollectionViewCompositionalLayout(section: section)
+            return layout
+        }
+        
+        
+        static func detailViewLayout() -> UICollectionViewLayout {
+            let layout = UICollectionViewCompositionalLayout { _, _ in
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 4, trailing: 4)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 3)
+                
+                // let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                // let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: DetailHeaderView.elementKind, alignment: .top)
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 8, bottom: 4, trailing: 8)
+                // section.boundarySupplementaryItems = [header]
+                return section
+            }
+            
+            return layout
+        }
+        
+        // MARK: 검색화면, 내가찜한 리스트 레이아웃
+        static func createMediaPlayCellLayout() -> UICollectionViewCompositionalLayout {
+            return UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+                
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                      heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                       heightDimension: .fractionalWidth(0.33))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                        heightDimension: .estimated(44))
+                let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerSize,
+                    elementKind: UICollectionView.elementKindSectionHeader,
+                    alignment: .top)
+                section.boundarySupplementaryItems = [sectionHeader]
+                
+                return section
+            }
+        }
+        
+        
+    }
 }

@@ -11,11 +11,15 @@ class BaseViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Resource.Color.white
+        view.backgroundColor = Resource.Color.black
         setViewController()
     }
     
     //MARK: ex) navigationTitle
-    func setViewController() { }
+    func setViewController() {
+        navigationController?.navigationBar.barTintColor = Resource.Color.darkGray
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        tabBarController?.tabBar.barTintColor = Resource.Color.darkGray
+    }
     
 }
