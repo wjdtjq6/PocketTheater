@@ -34,10 +34,16 @@ class SearchView: BaseView {
         $0.isHidden = true
     }
     
+    let activityIndicator = UIActivityIndicatorView(style: .large).then {
+        $0.color = .white
+        $0.hidesWhenStopped = true
+    }
+    
     override func setHierarchy() {
         addSubview(searchBar)
         addSubview(searchCollectionView)
         addSubview(noResultsLabel)
+        addSubview(activityIndicator)
     }
     
     override func setLayout() {
@@ -50,7 +56,9 @@ class SearchView: BaseView {
         }
         noResultsLabel.snp.makeConstraints { make in
             make.center.equalTo(searchCollectionView)
-            
+        }
+        activityIndicator.snp.makeConstraints { make in
+            make.center.equalTo(searchCollectionView)
         }
     }
 }

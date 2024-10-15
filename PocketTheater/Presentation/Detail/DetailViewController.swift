@@ -26,7 +26,7 @@ enum DetailSection {
 
 enum DetailItem {
     case header(MediaDetail)
-    case media(Result)
+    case media(Result)  // 여기를 [Result] 배열로 변경
 }
 
 struct DetailSectionModel {
@@ -43,9 +43,8 @@ extension DetailSectionModel: SectionModelType {
     }
 }
 
-
 final class DetailViewController: BaseViewController {
-
+    
     private let detailView = DetailView()
     private let viewModel = DetailViewModel()
     private let disposeBag = DisposeBag()
@@ -54,105 +53,48 @@ final class DetailViewController: BaseViewController {
     
     private var dataSource: RxCollectionViewSectionedReloadDataSource<DetailSectionModel>!
     
-    // 미디어 설명 레이블 (더보기 처리)
-    private var isTapped = false
-    
     override func loadView() {
         view = detailView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setViewController()
+        detailView.similarCollectionView.collectionViewLayout = createCompositionalLayout()
         setDataSource()
         bind()
     }
     
-    override func setViewController() {
-        super.setViewController()
-        detailView.similarCollectionView.collectionViewLayout = DetailViewController.createCompositionalLayout
-    }
-    
-    static  func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
-        return UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ in
-            guard let self = self else { return nil }
-            let section = self.dataSource.sectionModels[sectionIndex].section
-            switch section {
-            case .header:
-                return self.createHeaderSection()
-            case .similar:
-                return self.createSimilarSection()
-            }
-        }
-    }
-    
-    private func createHeaderSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: itemSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        return section
-    }
-    
-    private func createSimilarSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33), heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(180))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .groupPaging
-        
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        section.boundarySupplementaryItems = [header]
-        
-        return section
-    }
     private func setDataSource() {
         dataSource = RxCollectionViewSectionedReloadDataSource<DetailSectionModel>(
             configureCell: { [weak self] dataSource, collectionView, indexPath, item in
-                
-                
                 switch item {
-                case .header(let headerData):
+                case .header(let mediaDetail):
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailHeaderCell.identifier, for: indexPath) as? DetailHeaderCell else {
                         return UICollectionViewCell()
                     }
-                    // let header = dataSource[indexPath.section].items[0]
-                    cell.updateCell(with: headerData)
-                    self?.detailView.updateDetailMainImage(headerData.movie.posterPath)
+                    cell.updateCell(with: mediaDetail)
+                    self?.detailView.updateDetailMainImage(mediaDetail.movie.backdropPath)
                     return cell
                     
-                case .media(let mediaData):
+                case .media(let media):  // 개별 Result 항목을 받음
                     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaCollectionViewCell.identifier, for: indexPath) as? MediaCollectionViewCell else {
                         return UICollectionViewCell()
                     }
-                    cell.configure(with: mediaData[indexPath.item])
+                    cell.configure(with: media)  // 개별 항목을 설정
                     return cell
                 }
-                
-                // if indexPath.section != 0 {
-                //     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailHeaderCell.identifier, for: indexPath) as? DetailHeaderCell else { return DetailHeaderCell() }
-                //     cell.backgroundColor = .cyan
-                //     let header = dataSource[indexPath.section].header
-                //     print("🚨", header)
-                //     cell.updateCell(with: header)
-                //
-                //     return cell
-                // } else {
-                //     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MediaCollectionViewCell.identifier, for: indexPath) as? MediaCollectionViewCell else {
-                //         return MediaCollectionViewCell()
-                //     }
-                //
-                //     // let data = dataSource[indexPath.section].items
-                //     cell.configure(with: item)
-                //
-                //     return cell
-                // }
+            },
+            configureSupplementaryView: { dataSource, collectionView, kind, indexPath in
+                guard kind == UICollectionView.elementKindSectionHeader,
+                      let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MediaSectionHeaderView.identifier, for: indexPath) as? MediaSectionHeaderView else {
+                    return UICollectionReusableView()
+                }
+                header.configure(with: dataSource[indexPath.section].header)
+                return header
             }
         )
     }
-    
     private func bind() {
         let mediaSubject = PublishSubject<Result>()
         
@@ -161,26 +103,47 @@ final class DetailViewController: BaseViewController {
         
         guard let media = media else { return }
         mediaSubject.onNext(media)
-        // headerView.overviewLabel.rx.tapGesture()
-        //     .when(.recognized)  /// tapGesture()를 그냥 사용 시, sampleView 바인딩 할 때 event가 emit되므로 해당 코드 추가
-        //     .subscribe { [weak self] _ in
-        //         print("설명 영역 탭했어요!")
-        //         self?.toggleOverviewLabel()
-        //     }
-        //     .disposed(by: disposeBag)
         
         output.dataSource
             .bind(to: detailView.similarCollectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
     }
     
-    // private func toggleOverviewLabel() {
-    //     isTapped.toggle()
-    //     headerView.overviewLabel.numberOfLines = isTapped ? 0 : 2
-    //
-    //     UIView.animate(withDuration: 0.3) {
-    //         self.headerView.layoutIfNeeded()
-    //     }
-    // }
+    override func setViewController() {
+           super.setViewController()
+           detailView.similarCollectionView.collectionViewLayout = createCompositionalLayout()
+       }
     
+    private func createCompositionalLayout() -> UICollectionViewCompositionalLayout {
+        return UICollectionViewCompositionalLayout { sectionIndex, _ in
+            if sectionIndex == 0 {
+                // Header section (기존 코드 유지)
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(250))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(250))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                let section = NSCollectionLayoutSection(group: group)
+                return section
+            } else {
+                // Similar content section (수평 스크롤 적용)
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.33), heightDimension: .fractionalHeight(1.0))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(180))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                section.orthogonalScrollingBehavior = .continuous  // 수평 스크롤 설정
+                
+                // 여기에 헤더 추가 (유지)
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(44))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                section.boundarySupplementaryItems = [header]
+                
+                return section
+            }
+        }
+    }
+
 }

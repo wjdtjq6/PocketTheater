@@ -314,6 +314,7 @@ final class HomeViewController: BaseViewController, UIScrollViewDelegate {
     
     private func navigateToDetailViewController(with item: Result) {
         let vc = DetailViewController()
+        vc.media = item
         goToOtehrVC(vc: vc, mode: .present)
     }
     

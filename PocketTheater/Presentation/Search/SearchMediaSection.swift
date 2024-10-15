@@ -7,5 +7,14 @@
 
 import RxDataSources
 
-typealias MediaSection = SectionModel<String, Result>
+struct MediaSection {
+    var model: String
+    var items: [Result]
+}
 
+extension MediaSection: SectionModelType {
+    init(original: MediaSection, items: [Result]) {
+        self = original
+        self.items = items
+    }
+}

@@ -59,13 +59,6 @@ final class DetailHeaderCell: BaseCollectionViewCell {
         $0.text = "제작: 켈시 맨, 피트 닥터"
     }
     
-    // 비슷한 콘텐츠
-    private let similarContentLabel = UILabel().then {
-        $0.font = Resource.Font.bold15
-        $0.textColor = Resource.Color.white
-        $0.text = "비슷한 콘텐츠"
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setHierarchy()
@@ -77,7 +70,7 @@ final class DetailHeaderCell: BaseCollectionViewCell {
     }
     
     override func setHierarchy() {
-        [titleLabel, voteAverageLabel, playButton, saveButton, overviewLabel, castLabel, creatorLabel, similarContentLabel].forEach { self.addSubview($0) }
+        [titleLabel, voteAverageLabel, playButton, saveButton, overviewLabel, castLabel, creatorLabel].forEach { self.addSubview($0) }
     }
     
     override func setLayout() {
@@ -123,23 +116,17 @@ final class DetailHeaderCell: BaseCollectionViewCell {
             make.horizontalEdges.equalTo(safeArea).inset(16)
             make.height.equalTo(16)
         }
-    
-        similarContentLabel.snp.makeConstraints { make in
-            make.top.equalTo(creatorLabel.snp.bottom).offset(16)
-            make.horizontalEdges.equalTo(safeArea).inset(16)
-            make.height.equalTo(20)
-        }
     }
+    
     func updateCell(with media: MediaDetail) {
         print("✨✨", media)
         let castStr = media.cast.joined(separator: ", ")
         
-        titleLabel.text = media.movie.title
-        voteAverageLabel.text = "\(media.movie.voteAverage)"
+        titleLabel.text = media.movie.title ?? media.movie.name ?? "제목 없음"
+        voteAverageLabel.text = String(format: "%.1f", media.movie.voteAverage)
         overviewLabel.text = media.movie.overview
         castLabel.text = "출연: \(castStr)"
-        
-        // creatorLabel.text = "제작: \(media.creators.joined(separator: ", "))"
+        creatorLabel.text = "제작: \(media.crew.joined(separator: ", "))"
     }
     
 }

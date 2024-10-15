@@ -19,13 +19,16 @@ class DetailView: BaseView {
     }
     
     // 비슷한 콘텐츠 컬렉션뷰
-    lazy var similarCollectionView = UICollectionView(frame: .zero, collectionViewLayout: createCompositionalLayout()).then {
-        $0.backgroundColor = Resource.Color.black
+    lazy var similarCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = Resource.Color.black
         
-        // 헤더 & 셀 등록
-        $0.register(DetailHeaderCell.self, forCellWithReuseIdentifier: DetailHeaderCell.identifier)
-        $0.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: MediaCollectionViewCell.identifier)
-    }
+        collectionView.register(DetailHeaderCell.self, forCellWithReuseIdentifier: DetailHeaderCell.identifier)
+        collectionView.register(MediaCollectionViewCell.self, forCellWithReuseIdentifier: MediaCollectionViewCell.identifier)
+        collectionView.register(MediaSectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MediaSectionHeaderView.identifier)
+        return collectionView
+    }()
     
     private let tvButton = UIButton().then {
         $0.setImage(Resource.Image.tv, for: .normal)

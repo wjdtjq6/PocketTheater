@@ -7,8 +7,15 @@
 
 import Foundation
 
-enum MediaType: String {
+enum MediaType: String, Codable {
     case tv, movie
+    case unknown
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let rawValue = try? container.decode(String.self)
+        self = MediaType(rawValue: rawValue ?? "") ?? .unknown
+    }
 }
 
 enum NetworkError: Error {

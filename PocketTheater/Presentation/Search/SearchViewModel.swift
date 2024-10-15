@@ -19,10 +19,11 @@ final class SearchViewModel: ViewModelType {
     private var isFetching = false
     private var hasMorePages = true
     private var currentQuery = ""
+
     struct Input {
         let searchText: ControlProperty<String>
         let itemSelected: ControlEvent<IndexPath>
-        let prefetchTrigger: Observable<Void>
+        let prefatchTrigger: Observable<Void>
     }
     
     struct Output {
@@ -38,46 +39,31 @@ final class SearchViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        let isSearching = input.searchText.map { !$0.isEmpty }
         let isLoading = BehaviorRelay<Bool>(value: false)
+        let isSearching = input.searchText.map { !$0.isEmpty }
+        
         let searchResults = input.searchText
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .do(onNext: { [weak self] query in
-                guard let self else { return }
-                self.currentQuery = query
-                self.currentPage = 1
-                self.hasMorePages = true
-                self.isFetching = false
-            })
-            .flatMapLatest { [weak self] query -> Observable<[Result]> in
-                guard let self = self, !query.isEmpty else {
-                    return .just([])
-                }
-                isLoading.accept(true)
-                return self.searchMedia(query: query)
-                    .do(onNext: { _ in isLoading.accept(false) })
-            }
-            .share()
-        
-        searchResults
-            .bind(to: self.searchMedia)
-            .disposed(by: disposeBag)
-        
-        let noResult = Observable.combineLatest(isSearching, searchMedia) { isSearching, search in
-            isSearching && search.isEmpty
-        }.asDriver(onErrorJustReturn: false)
-        
-        let mediaResults = Observable.combineLatest(trendingMedia, searchMedia, isSearching) { trending, search, isSearching in
-            if !isSearching {
-                return [MediaSection(model: "추천 시리즈 & 영화", items: trending)]
-            } else if search.isEmpty {
-                return []
-            } else {
-                return [MediaSection(model: "영화 & 시리즈", items: search)]
-            }
-        }
-        let loadMoreResults = input.prefetchTrigger
+                   .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+                   .distinctUntilChanged()
+                   .do(onNext: { [weak self] query in
+                       self?.currentQuery = query
+                       self?.currentPage = 1
+                       self?.hasMorePages = true
+                       self?.isFetching = false
+                   })
+                   .flatMapLatest { [weak self] query -> Observable<[Result]> in
+                       guard let self = self, !query.isEmpty else {
+                           return .just([])
+                       }
+                       return self.searchMedia(query: query)
+                   }
+                   .share()
+
+               searchResults
+                   .bind(to: searchMedia)
+                   .disposed(by: disposeBag)
+
+        let prefetchResults = input.prefatchTrigger
             .filter { [weak self] in
                 guard let self = self else { return false }
                 return !self.isFetching && self.hasMorePages && !self.currentQuery.isEmpty
@@ -93,28 +79,41 @@ final class SearchViewModel: ViewModelType {
                     })
             }
             .share()
-        
-        loadMoreResults
+
+        prefetchResults
             .withLatestFrom(searchMedia) { newResults, currentResults in
                 return currentResults + newResults
             }
             .bind(to: searchMedia)
             .disposed(by: disposeBag)
-        
+
+        let noResult = Observable.combineLatest(isSearching, searchMedia) { isSearching, search in
+            isSearching && search.isEmpty
+        }
+
+        let mediaResults = Observable.combineLatest(trendingMedia, searchMedia, isSearching) { trending, search, isSearching in
+            if !isSearching {
+                return [MediaSection(model: "추천 시리즈 & 영화", items: trending)]
+            } else if search.isEmpty {
+                return []
+            } else {
+                return [MediaSection(model: "영화 & 시리즈", items: search)]
+            }
+        }
+
         input.itemSelected
             .withLatestFrom(mediaResults) { indexPath, sections in
                 return sections[indexPath.section].items[indexPath.item]
             }
-            .subscribe(onNext: { [weak self] item in
-                self?.selectedMedia(item)
-            })
+            .bind(to: goToDetail)
             .disposed(by: disposeBag)
-        
+
         return Output(
             mediaResults: mediaResults.asDriver(onErrorJustReturn: []),
             gotoDetail: goToDetail,
             isSearching: isSearching.asDriver(onErrorJustReturn: false),
-            hasNoResults: noResult, isLoading: isLoading.asDriver()
+            hasNoResults: noResult.asDriver(onErrorJustReturn: false),
+            isLoading: isLoading.asDriver()
         )
     }
     
@@ -122,9 +121,7 @@ final class SearchViewModel: ViewModelType {
         Task {
             do {
                 let media = try await networkManager.fetchTrending(mediaType: .movie)
-                // print(media.results)
-                let items = media.results.map { $0 }
-                // dump(items)
+                let items = media.results
                 DispatchQueue.main.async { [weak self] in
                     self?.trendingMedia.accept(items)
                 }
@@ -135,30 +132,33 @@ final class SearchViewModel: ViewModelType {
     }
     
     private func searchMedia(query: String) -> Observable<[Result]> {
-            return Observable.create { [weak self] observer in
-                guard let self = self else {
-                    observer.onCompleted()
-                    return Disposables.create()
-                }
-                
-                Task {
-                    do {
-                        let media = try await self.networkManager.searchMedia(mediaType: .movie, query: query, page: self.currentPage)
-                        let items = media.results.map { $0 }
-                        self.hasMorePages = media.page < media.totalPages
-                        self.currentPage += 1
-                        observer.onNext(items)
-                        observer.onCompleted()
-                    } catch {
-                        observer.onError(error)
-                    }
-                }
-                
-                return Disposables.create()
-            }
-        }
-        
-        private func selectedMedia(_ item: Result) {
-            goToDetail.onNext(item)
-        }
+           return Observable.create { [weak self] observer in
+               guard let self = self else {
+                   observer.onCompleted()
+                   return Disposables.create()
+               }
+               
+               Task {
+                   do {
+                       let media = try await self.networkManager.searchMedia(mediaType: .movie, query: query, page: self.currentPage)
+                       let items = media.results
+                       print("Received items: \(items)") // 디버깅을 위한 로그
+                       self.hasMorePages = media.page < media.totalPages
+                       self.currentPage += 1
+                       
+                       DispatchQueue.main.async {
+                           observer.onNext(items)
+                           observer.onCompleted()
+                       }
+                   } catch {
+                       print("Search error: \(error)") // 오류 로그
+                       DispatchQueue.main.async {
+                           observer.onError(error)
+                       }
+                   }
+               }
+               
+               return Disposables.create()
+           }
+       }
 }

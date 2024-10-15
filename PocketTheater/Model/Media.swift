@@ -24,7 +24,7 @@ struct Result: Decodable {
     let id: Int
     let name: String?
     let title: String?
-    let mediaType: String
+    let mediaType: String?
     let overview: String
     let posterPath: String?
     let adult: Bool

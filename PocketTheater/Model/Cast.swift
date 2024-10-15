@@ -17,9 +17,9 @@ struct Casts: Decodable {
     let adult: Bool
     let id: Int
     let name: String
-    let castID: Int
+    let castID: Int?
     let character: String
-    let creditID: String
+    let creditID: String?
     let order: Int
     
     enum CodingKeys: String, CodingKey {
