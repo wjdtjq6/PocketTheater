@@ -23,7 +23,7 @@
 | **[김윤우](https://github.com/yoonwooiOS)** | **[김준희](https://github.com/dev-junehee)** | **[소정섭](https://github.com/wjdtjq6)** |
 | :-: | :-: | :-: |
 | <a href="https://github.com/dev-junehee"><img src="https://avatars.githubusercontent.com/u/170070172?v=4" width=200px alt="김준희" /> | <a href="https://github.com/dev-junehee"><img src="https://avatars.githubusercontent.com/u/116873887?v=4" width=200px alt="김준희" /> | <a href="https://github.com/dev-junehee"><img src="https://avatars.githubusercontent.com/u/71679088?v=4" width=200px alt="김준희" /> |
-| 프로젝트 초기 세팅<br />공용 컴포넌트<br />검색 탭 | 좋아요 탭<br />미디어 상세 화면 | 홈 탭<br />네트워크 통신 로직 |
+| 프로젝트 초기 세팅<br />공용 컴포넌트<br />검색 탭 | 좋아요 탭<br />미디어 상세 화면 | 홈 탭<br />네트워크 통신 로직<br />커스텀 Alert |
 
 <br />
 
