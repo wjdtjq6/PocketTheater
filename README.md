@@ -8,8 +8,17 @@
 > **개발 인원** : 3인<br />
 > **최소 버전** : iOS 15.0+<br />
 
-
 <br />
+
+<!-- <div align="center">
+  <img width="19%" src="https://github.com/user-attachments/assets/ea25efac-4679-4692-a105-33bb7d65e027" />
+  <img width="19%" src="https://github.com/user-attachments/assets/26c72e9b-c95b-4257-8ff1-bfccbdfe4bfb" />
+  <img width="19%" src="https://github.com/user-attachments/assets/0af30259-aeab-46ab-9b14-9b7323727075" />
+  <img width="19%" src="https://github.com/user-attachments/assets/fbf30d34-e1d7-4deb-97ff-e5dc2274520a" />
+  <img width="19%" src="https://github.com/user-attachments/assets/70051c3d-a36c-49f7-80da-94d38d3a43fc" />
+</div> -->
+
+<br /><br />
 
 | **[김윤우](https://github.com/yoonwooiOS)** | **[김준희](https://github.com/dev-junehee)** | **[소정섭](https://github.com/wjdtjq6)** |
 | :-: | :-: | :-: |
@@ -58,20 +67,14 @@
 
 <br />
 
-| Prefix  | Description                           |
-|------------|--------------------------------|
-| Feat     | 새로운 기능에 대한 커밋        |
-| Fix      | 버그 수정에 대한 커밋          |
-| Build    | 빌드 관련 파일 수정에 대한 커밋|
-| Chore    | 그 외 자잘한 수정에 대한 커밋  |
-| Ci       | CI 관련 설정 수정에 대한 커밋  |
-| Docs     | 문서 수정에 대한 커밋          |
-| Style    | UI 스타일에 관한 커밋          |
-| Refactor | 코드 리팩토링에 대한 커밋      |
-| Test     | 테스트 코드 수정에 대한 커밋   |
-| Init     | 프로젝트 시작에 대한 커밋      |
-| Release  | 릴리즈에 대한 커밋             |
-| WIP  | 미완성 작업에 대한 임시 커밋             |
+| Prefix  | Description | Prefix  | Description | 
+|------------|-----------|------------|-----------|
+| Feat | 새로운 기능에 대한 커밋 | Style | UI 스타일에 관한 커밋 |
+| Fix | 버그 수정에 대한 커밋 | Refactor | 코드 리팩토링에 대한 커밋 |
+| Build | 빌드 관련 파일 수정에 대한 커밋 | Test | 테스트 코드 수정에 대한 커밋 |
+| Chore | 그 외 자잘한 수정에 대한 커밋 | Init | 프로젝트 시작에 대한 커밋 |
+| Ci | CI 관련 설정 수정에 대한 커밋 | Release | 릴리즈에 대한 커밋 |
+| Docs | 문서 수정에 대한 커밋 | WIP | 미완성 작업에 대한 임시 커밋 |
 
 <br />
 
@@ -110,5 +113,3 @@
 - 데일리 스크럼을 통해 팀원별 진행 상황 공유하고 보다 효율적인 커뮤니케이션 시도
 - 기능 작업 단위를 작게 가져가면서 PR에 대한 팀원간의 원활한 상호 코드리뷰 진행
 - 완성도가 중요한 프로젝트에서는 새로운 기술을 일정 시간 내에 시도해보고, 기대한 성과가 나오지 않으면 과감하게 포기하는 결단력이 필요했지만, 이번 프로젝트에서는 그런 결단력이 부족해 진행 속도와 완성도에 영향을 미쳤습니다. (도전적인 프로젝트에서는 다양한 기술을 적용해보는 것도 의미 있다고 생각합니다!)
-
-<br />
