@@ -21,7 +21,7 @@ enum Constant {
     }
     
     enum Like {
-        
+        static let navigationTitle = "내가 찜한 리스트"
     }
     
     enum Detail {
